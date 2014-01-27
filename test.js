@@ -10,12 +10,15 @@ x = new gg.mat("2 2 1; 2 3 1; 4 2 4");
 x.print();
 // console.log("___________________________")
 
-z = x.eye();
+x.print();
+//x.eye(8,8);
+y = x.i();
+y.print();
 // setTimeout(x.print(),2000);
 
-x.eye();
 
 console.log(util.inspect(x));
 
-x.print()
+x.print();
+
 
