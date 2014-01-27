@@ -50,10 +50,10 @@ void matWrap::Initialize(Handle<Object> target) {
       FunctionTemplate::New(ones)->GetFunction());
       
   tpl->PrototypeTemplate()->Set(String::NewSymbol("zeros"),
-      FunctionTemplate::New(ones)->GetFunction());    
+      FunctionTemplate::New(zeros)->GetFunction());    
       
   tpl->PrototypeTemplate()->Set(String::NewSymbol("fill"),
-      FunctionTemplate::New(ones)->GetFunction());  
+      FunctionTemplate::New(fill)->GetFunction());  
       
   tpl->PrototypeTemplate()->Set(String::NewSymbol("n_cols"),
       FunctionTemplate::New(n_cols)->GetFunction());
@@ -81,6 +81,13 @@ void matWrap::Initialize(Handle<Object> target) {
       
   tpl->PrototypeTemplate()->Set(String::NewSymbol("eye"),
       FunctionTemplate::New(eye)->GetFunction());
+      
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("resize"),
+      FunctionTemplate::New(resize)->GetFunction());
+      
+            
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("i"),
+      FunctionTemplate::New(i)->GetFunction());
   
   constructor = Persistent<Function>::New(tpl->GetFunction());
   target->Set(String::NewSymbol("mat"), constructor);
@@ -223,10 +230,36 @@ Handle<Value> matWrap::is_square(const Arguments& args) {
 
 Handle<Value> matWrap::eye(const Arguments& args) {
   HandleScope scope;
-  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
-  arma::mat* q = w->GetWrapped();
-  arma::mat A = *q;
-  A.eye();
+  
+    matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+    arma::mat* q = w->GetWrapped();
+    arma::mat A = *q;
+    
+  if (args.Length() == 0)
+    {
+    A.eye();
+    }
+  else if(args.Length() == 2)
+    {
+    A.eye(args[0]->NumberValue(), args[1]->NumberValue());
+    }
   *q = A;
   return scope.Close(Undefined());
+}
+
+Handle<Value> matWrap::resize(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  q->resize(args[0]->NumberValue(), args[1]->NumberValue());
+
+  return scope.Close(Undefined());
+}
+
+Handle<Value> matWrap::i(const Arguments& args) {
+  HandleScope scope;
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();  
+  return scope.Close(NewInstance(q->i()));
 }

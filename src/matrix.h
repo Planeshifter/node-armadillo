@@ -41,6 +41,10 @@ class matWrap : public node::ObjectWrap {
    static v8::Handle<v8::Value> is_square(const v8::Arguments& args);
    
    static v8::Handle<v8::Value> eye(const v8::Arguments& args);
+    
+   static v8::Handle<v8::Value> resize(const v8::Arguments& args);
+   
+    static v8::Handle<v8::Value> i(const v8::Arguments& args);
    
   // Wrapped object
      arma::mat* q_;
