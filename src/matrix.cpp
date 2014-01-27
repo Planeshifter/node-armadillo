@@ -66,8 +66,21 @@ void matWrap::Initialize(Handle<Object> target) {
       
   tpl->PrototypeTemplate()->Set(String::NewSymbol("t"),
       FunctionTemplate::New(t)->GetFunction());
+      
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("reset"),
+      FunctionTemplate::New(reset)->GetFunction());
+      
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_empty"),
+      FunctionTemplate::New(is_empty)->GetFunction());
+      
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_finite"),
+      FunctionTemplate::New(is_finite)->GetFunction());
   
-  
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_square"),
+      FunctionTemplate::New(is_square)->GetFunction());
+      
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("eye"),
+      FunctionTemplate::New(eye)->GetFunction());
   
   constructor = Persistent<Function>::New(tpl->GetFunction());
   target->Set(String::NewSymbol("mat"), constructor);
@@ -170,3 +183,50 @@ Handle<Value> matWrap::print(const Arguments& args) {
 
 
 
+Handle<Value> matWrap::reset(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  q->reset();
+
+  return scope.Close(Undefined());
+}
+
+
+Handle<Value> matWrap::is_empty(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+
+  return scope.Close(Boolean::New(q->is_empty()));
+}
+
+Handle<Value> matWrap::is_finite(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+
+  return scope.Close(Boolean::New(q->is_finite()));
+}
+
+Handle<Value> matWrap::is_square(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+
+  return scope.Close(Boolean::New(q->is_square()));
+}
+
+Handle<Value> matWrap::eye(const Arguments& args) {
+  HandleScope scope;
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+  A.eye();
+  *q = A;
+  return scope.Close(Undefined());
+}

@@ -31,7 +31,7 @@
     "v8_enable_gdbjit": 0,
     "v8_no_strict_aliasing": 1,
     "v8_use_snapshot": "false",
-    "nodedir": "/root/.node-gyp/0.10.24",
+    "nodedir": "/root/.node-gyp/0.10.25",
     "copy_dev_lib": "true",
     "standalone_static_library": 1
   }

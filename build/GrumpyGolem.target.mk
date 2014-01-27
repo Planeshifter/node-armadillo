@@ -28,9 +28,9 @@ CFLAGS_CC_Debug := \
 	-fno-rtti
 
 INCS_Debug := \
-	-I/root/.node-gyp/0.10.24/src \
-	-I/root/.node-gyp/0.10.24/deps/uv/include \
-	-I/root/.node-gyp/0.10.24/deps/v8/include
+	-I/root/.node-gyp/0.10.25/src \
+	-I/root/.node-gyp/0.10.25/deps/uv/include \
+	-I/root/.node-gyp/0.10.25/deps/v8/include
 
 DEFS_Release := \
 	'-D_LARGEFILE_SOURCE' \
@@ -58,9 +58,9 @@ CFLAGS_CC_Release := \
 	-fno-rtti
 
 INCS_Release := \
-	-I/root/.node-gyp/0.10.24/src \
-	-I/root/.node-gyp/0.10.24/deps/uv/include \
-	-I/root/.node-gyp/0.10.24/deps/v8/include
+	-I/root/.node-gyp/0.10.25/src \
+	-I/root/.node-gyp/0.10.25/deps/uv/include \
+	-I/root/.node-gyp/0.10.25/deps/v8/include
 
 OBJS := \
 	$(obj).target/$(TARGET)/src/gg.o \
