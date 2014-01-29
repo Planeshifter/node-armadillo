@@ -33,6 +33,7 @@ class matWrap : public node::ObjectWrap {
    static v8::Handle<v8::Value> t(const v8::Arguments& args);
    static v8::Handle<v8::Value> n_cols(const v8::Arguments& args);
    static v8::Handle<v8::Value> n_rows(const v8::Arguments& args);
+   static v8::Handle<v8::Value> n_elem(const v8::Arguments& args);
    static v8::Handle<v8::Value> print(const v8::Arguments& args);
    static v8::Handle<v8::Value> reset(const v8::Arguments& args);
    
@@ -44,7 +45,9 @@ class matWrap : public node::ObjectWrap {
     
    static v8::Handle<v8::Value> resize(const v8::Arguments& args);
    
-    static v8::Handle<v8::Value> i(const v8::Arguments& args);
+   static v8::Handle<v8::Value> i(const v8::Arguments& args);
+   
+   static v8::Handle<v8::Value> at(const v8::Arguments& args);
    
   // Wrapped object
      arma::mat* q_;

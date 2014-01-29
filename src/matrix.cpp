@@ -28,8 +28,13 @@ matWrap::matWrap(const Arguments& args) : q_(NULL) {
   q_ = new arma::mat(matrix_input);
   }
   
-  else if (args[0]->IsNumber() && args[1]->IsNumber()) {
+  else if (args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber()) {
   q_ = new arma::mat(args[0]->NumberValue(), args[1]->NumberValue());
+  }
+  
+  else if (args.Length() == 3 && args[0]->IsNumber() && args[1]->IsNumber() && args[2]->IsString() )
+  {
+    
   }
   
 }
@@ -61,6 +66,9 @@ void matWrap::Initialize(Handle<Object> target) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("n_rows"),
       FunctionTemplate::New(n_rows)->GetFunction());
       
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("n_elem"),
+      FunctionTemplate::New(n_elem)->GetFunction());
+      
   tpl->PrototypeTemplate()->Set(String::NewSymbol("print"),
       FunctionTemplate::New(print)->GetFunction());
       
@@ -88,6 +96,9 @@ void matWrap::Initialize(Handle<Object> target) {
             
   tpl->PrototypeTemplate()->Set(String::NewSymbol("i"),
       FunctionTemplate::New(i)->GetFunction());
+      
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("at"),
+      FunctionTemplate::New(at)->GetFunction());
   
   constructor = Persistent<Function>::New(tpl->GetFunction());
   target->Set(String::NewSymbol("mat"), constructor);
@@ -179,6 +190,16 @@ Handle<Value> matWrap::n_rows(const Arguments& args) {
   return scope.Close(Number::New(q->n_rows));
 }
 
+Handle<Value> matWrap::n_elem(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+
+  return scope.Close(Number::New(q->n_elem));
+}
+
+
 Handle<Value> matWrap::print(const Arguments& args) {
   HandleScope scope;
 
@@ -262,4 +283,22 @@ Handle<Value> matWrap::i(const Arguments& args) {
   matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
   arma::mat* q = w->GetWrapped();  
   return scope.Close(NewInstance(q->i()));
+}
+
+Handle<Value> matWrap::at(const Arguments& args) {
+  HandleScope scope;
+  Local<Value> ret;
+  
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();  
+  
+  if(args.Length() == 1 && args[0]->IsNumber())
+    {
+    ret = Number::New(q->at(args[0]->NumberValue()));
+    }
+  else if(args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber())
+    {
+    ret = Number::New(q->at(args[0]->NumberValue(), args[1]->NumberValue()));
+    }
+  return scope.Close(ret);
 }
