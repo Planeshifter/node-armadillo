@@ -1,7 +1,7 @@
 {
   "targets": [
     {
-      "target_name": "GrumpyGolem",
+      "target_name": "armadillo",
       "sources": ['src/gg.cpp',
                   'src/matrix.cpp'
                  

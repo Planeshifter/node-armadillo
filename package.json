@@ -1,8 +1,8 @@
 {
   "name": "armadillo",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Interface to the C++ Armadillo linear algebra library",
-  "main": "test.js",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "node-gyp rebuild"
@@ -16,6 +16,9 @@
     "mathematics",
     "matrices"
   ],
+  "dependencies": {
+	    "bindings": "1.2.0"
+	  },
   "author": "Philipp Burckhardt",
   "license": "MPL 2.0",
   "gypfile": true,

@@ -1,1 +1,0 @@
-cmd_Release/obj.target/GrumpyGolem.node := flock ./Release/linker.lock g++ -shared -pthread -rdynamic -m32  -Wl,-soname=GrumpyGolem.node -o Release/obj.target/GrumpyGolem.node -Wl,--start-group Release/obj.target/GrumpyGolem/src/gg.o Release/obj.target/GrumpyGolem/src/matrix.o -Wl,--end-group -llapack -lblas -larmadillo

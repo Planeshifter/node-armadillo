@@ -9,4 +9,4 @@ void Initialize(Handle<Object> target) {
   matWrap::Initialize(target);
 }
 
-NODE_MODULE(GrumpyGolem, Initialize)
+NODE_MODULE(armadillo, Initialize)
