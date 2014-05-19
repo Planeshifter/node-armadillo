@@ -1,0 +1,25 @@
+{
+  "name": "armadillo",
+  "version": "0.0.0",
+  "description": "Interface to the C++ Armadillo linear algebra library",
+  "main": "test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "install": "node-gyp rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Planeshifter/node-armadillo.git"
+  },
+  "keywords": [
+    "linear-algebra",
+    "mathematics",
+    "matrices"
+  ],
+  "author": "Philipp Burckhardt",
+  "license": "MPL 2.0",
+  "gypfile": true,
+  "bugs": {
+    "url": "https://github.com/Planeshifter/node-armadillo/issues"
+  }
+}

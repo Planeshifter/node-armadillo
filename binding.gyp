@@ -7,7 +7,8 @@
                  
       ],
       'cflags!': [ '-fno-exceptions' ],
-      'cflags_cc!': [ '-fno-exceptions' ]
+      'cflags_cc!': [ '-fno-exceptions' ],
+      'libraries' : ['-llapack','-lblas','-larmadillo']
     }
   ],
    

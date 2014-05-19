@@ -11,12 +11,11 @@ DEFS_Debug := \
 
 # Flags passed to all source files.
 CFLAGS_Debug := \
-	-fPIC \
 	-Wall \
 	-Wextra \
 	-Wno-unused-parameter \
 	-pthread \
-	-m64 \
+	-m32 \
 	-g \
 	-O0
 
@@ -28,9 +27,9 @@ CFLAGS_CC_Debug := \
 	-fno-rtti
 
 INCS_Debug := \
-	-I/root/.node-gyp/0.10.25/src \
-	-I/root/.node-gyp/0.10.25/deps/uv/include \
-	-I/root/.node-gyp/0.10.25/deps/v8/include
+	-I/home/philipp/.node-gyp/0.10.25/src \
+	-I/home/philipp/.node-gyp/0.10.25/deps/uv/include \
+	-I/home/philipp/.node-gyp/0.10.25/deps/v8/include
 
 DEFS_Release := \
 	'-D_LARGEFILE_SOURCE' \
@@ -39,12 +38,11 @@ DEFS_Release := \
 
 # Flags passed to all source files.
 CFLAGS_Release := \
-	-fPIC \
 	-Wall \
 	-Wextra \
 	-Wno-unused-parameter \
 	-pthread \
-	-m64 \
+	-m32 \
 	-O2 \
 	-fno-strict-aliasing \
 	-fno-tree-vrp \
@@ -58,9 +56,9 @@ CFLAGS_CC_Release := \
 	-fno-rtti
 
 INCS_Release := \
-	-I/root/.node-gyp/0.10.25/src \
-	-I/root/.node-gyp/0.10.25/deps/uv/include \
-	-I/root/.node-gyp/0.10.25/deps/v8/include
+	-I/home/philipp/.node-gyp/0.10.25/src \
+	-I/home/philipp/.node-gyp/0.10.25/deps/uv/include \
+	-I/home/philipp/.node-gyp/0.10.25/deps/v8/include
 
 OBJS := \
 	$(obj).target/$(TARGET)/src/gg.o \
@@ -93,14 +91,17 @@ $(obj).$(TOOLSET)/$(TARGET)/%.o: $(obj)/%.cpp FORCE_DO_CMD
 LDFLAGS_Debug := \
 	-pthread \
 	-rdynamic \
-	-m64
+	-m32
 
 LDFLAGS_Release := \
 	-pthread \
 	-rdynamic \
-	-m64
+	-m32
 
-LIBS :=
+LIBS := \
+	-llapack \
+	-lblas \
+	-larmadillo
 
 $(obj).target/GrumpyGolem.node: GYP_LDFLAGS := $(LDFLAGS_$(BUILDTYPE))
 $(obj).target/GrumpyGolem.node: LIBS := $(LIBS)
