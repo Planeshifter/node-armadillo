@@ -49,6 +49,16 @@ class matWrap : public node::ObjectWrap {
    
    static v8::Handle<v8::Value> at(const v8::Arguments& args);
    
+   static v8::Handle<v8::Value> randu(const v8::Arguments& args);
+   static v8::Handle<v8::Value> randn(const v8::Arguments& args);
+
+   static v8::Handle<v8::Value> shed_row(const v8::Arguments& args);
+   static v8::Handle<v8::Value> shed_rows(const v8::Arguments& args);
+   static v8::Handle<v8::Value> shed_col(const v8::Arguments& args);
+   static v8::Handle<v8::Value> shed_cols(const v8::Arguments& args);
+   static v8::Handle<v8::Value> swap_rows(const v8::Arguments& args);
+   static v8::Handle<v8::Value> swap_cols(const v8::Arguments& args);
+
   // Wrapped object
      arma::mat* q_;
 };

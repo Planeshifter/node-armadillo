@@ -93,13 +93,36 @@ void matWrap::Initialize(Handle<Object> target) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("resize"),
       FunctionTemplate::New(resize)->GetFunction());
       
-            
   tpl->PrototypeTemplate()->Set(String::NewSymbol("i"),
       FunctionTemplate::New(i)->GetFunction());
       
   tpl->PrototypeTemplate()->Set(String::NewSymbol("at"),
       FunctionTemplate::New(at)->GetFunction());
   
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("randu"),
+      FunctionTemplate::New(randu)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("randn"),
+      FunctionTemplate::New(randn)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_row"),
+       FunctionTemplate::New(shed_row)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_rows"),
+       FunctionTemplate::New(shed_rows)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_col"),
+       FunctionTemplate::New(shed_col)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_cols"),
+       FunctionTemplate::New(shed_cols)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("swap_rows"),
+      FunctionTemplate::New(swap_rows)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("swap_cols"),
+      FunctionTemplate::New(swap_cols)->GetFunction());
+
   constructor = Persistent<Function>::New(tpl->GetFunction());
   target->Set(String::NewSymbol("mat"), constructor);
 }
@@ -301,4 +324,125 @@ Handle<Value> matWrap::at(const Arguments& args) {
     ret = Number::New(q->at(args[0]->NumberValue(), args[1]->NumberValue()));
     }
   return scope.Close(ret);
+}
+
+Handle<Value> matWrap::randu(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  if (args.Length() == 0)
+  	  {
+	  A.randu();
+  	  }
+  else if (args.Length() == 2)
+	  {
+		  A.randu(args[0]->NumberValue(), args[1]->NumberValue());
+	  }
+  *q = A;
+  return scope.Close(Undefined());
+}
+
+
+Handle<Value> matWrap::randn(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  if (args.Length() == 0)
+  	  {
+	  A.randn();
+  	  }
+  else if (args.Length() == 2)
+	  {
+		  A.randn(args[0]->NumberValue(), args[1]->NumberValue());
+	  }
+  *q = A;
+  return scope.Close(Undefined());
+}
+
+Handle<Value> matWrap::shed_row(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  A.shed_row(args[0]->NumberValue());
+  *q = A;
+  return scope.Close(Undefined());
+}
+
+Handle<Value> matWrap::shed_rows(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  A.shed_rows(args[0]->NumberValue(), args[1]->NumberValue());
+  *q = A;
+  return scope.Close(Undefined());
+}
+
+Handle<Value> matWrap::shed_col(const Arguments& args) {
+  HandleScope scope;
+
+  if(args.Length() == 1 && args[0]->IsNumber())
+  {
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  A.shed_col(args[0]->NumberValue());
+  *q = A;
+  return scope.Close(Undefined());
+  }
+  else
+	  {
+	  return ThrowException(Exception::TypeError(
+			  String::New("shed_col function has only one (numeric) argument: column_number")));
+	  }
+}
+
+Handle<Value> matWrap::shed_cols(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  A.shed_cols(args[0]->NumberValue(), args[1]->NumberValue());
+  *q = A;
+  return scope.Close(Undefined());
+}
+
+
+
+Handle<Value> matWrap::swap_rows(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  A.swap_rows(args[0]->NumberValue(), args[1]->NumberValue());
+  *q = A;
+  return scope.Close(Undefined());
+}
+
+Handle<Value> matWrap::swap_cols(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat A = *q;
+
+  A.swap_cols(args[0]->NumberValue(), args[1]->NumberValue());
+  *q = A;
+  return scope.Close(Undefined());
 }

@@ -7,6 +7,11 @@ Interface to the C++ Armadillo linear algebra library for node.js
 
 ## Installation
 
+```bash
+npm install armadillo
+```
+
+## Getting Started
 ```javascript		
 var arma = require('armadillo');
 ```
