@@ -86,7 +86,17 @@ void matWrap::Initialize(Handle<Object> target) {
   
   tpl->PrototypeTemplate()->Set(String::NewSymbol("is_square"),
       FunctionTemplate::New(is_square)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_vec"),
+      FunctionTemplate::New(is_vec)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_colvec"),
+      FunctionTemplate::New(is_colvec)->GetFunction());
       
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_rowvec"),
+      FunctionTemplate::New(is_rowvec)->GetFunction());
+
+
   tpl->PrototypeTemplate()->Set(String::NewSymbol("eye"),
       FunctionTemplate::New(eye)->GetFunction());
       
@@ -122,6 +132,15 @@ void matWrap::Initialize(Handle<Object> target) {
 
   tpl->PrototypeTemplate()->Set(String::NewSymbol("swap_cols"),
       FunctionTemplate::New(swap_cols)->GetFunction());
+
+
+  // Operators
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("add"),
+      FunctionTemplate::New(add)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("subtract"),
+      FunctionTemplate::New(subtract)->GetFunction());
+
 
   constructor = Persistent<Function>::New(tpl->GetFunction());
   target->Set(String::NewSymbol("mat"), constructor);
@@ -270,6 +289,33 @@ Handle<Value> matWrap::is_square(const Arguments& args) {
   arma::mat* q = w->GetWrapped();
 
   return scope.Close(Boolean::New(q->is_square()));
+}
+
+Handle<Value> matWrap::is_vec(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+
+  return scope.Close(Boolean::New(q->is_vec()));
+}
+
+Handle<Value> matWrap::is_colvec(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+
+  return scope.Close(Boolean::New(q->is_colvec()));
+}
+
+Handle<Value> matWrap::is_rowvec(const Arguments& args) {
+  HandleScope scope;
+
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+
+  return scope.Close(Boolean::New(q->is_rowvec()));
 }
 
 Handle<Value> matWrap::eye(const Arguments& args) {
@@ -446,3 +492,35 @@ Handle<Value> matWrap::swap_cols(const Arguments& args) {
   *q = A;
   return scope.Close(Undefined());
 }
+
+// Operators
+Handle<Value> matWrap::add(const Arguments& args) {
+  HandleScope scope;
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat a = *q;
+
+  Handle<Object> obj = Handle<Object>::Cast(args[0]);
+  matWrap* u = ObjectWrap::Unwrap<matWrap>(obj);
+  arma::mat* r = u->GetWrapped();
+  arma::mat b = *r;
+
+  arma::mat c = a + b;
+  return scope.Close(NewInstance(c));
+}
+
+Handle<Value> matWrap::subtract(const Arguments& args) {
+  HandleScope scope;
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat a = *q;
+
+  Handle<Object> obj = Handle<Object>::Cast(args[0]);
+  matWrap* u = ObjectWrap::Unwrap<matWrap>(obj);
+  arma::mat* r = u->GetWrapped();
+  arma::mat b = *r;
+
+  arma::mat c = a - b;
+  return scope.Close(NewInstance(c));
+}
+

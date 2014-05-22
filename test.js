@@ -4,9 +4,15 @@ var gg = require('./build/Release/armadillo');
 var util = require('util');
 
 x = new gg.mat("2 2 1; 2 3 1; 4 2 4");
-x.print();
-x.shed_col(1);
-x.shed_rows(0,1);
+//x.print();
+//x.shed_col(1);
+//x.shed_rows(0,1);
+//if (x.is_colvec()===true){console.log("JA")}
+//else {console.log("NEIN")};
+
+y = new gg.mat("2 2 1; 2 3 1; 4 2 4");
+z = x.subtract(y);
+z.print();
 //x.randn();
 // x.fill(2.2);
 // = x.n_rows();
@@ -23,7 +29,7 @@ x.shed_rows(0,1);
 
 //console.log(util.inspect(x));
 
-x.print();
-console.log(x.nrow);
+//x.print();
+//console.log(x.nrow);
 
 
