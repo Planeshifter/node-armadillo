@@ -15,3 +15,6 @@ npm install armadillo
 ```javascript		
 var arma = require('armadillo');
 ```
+## Implemented Methods 
+
+### Matrices
