@@ -1,5 +1,3 @@
-
-#define BUILDING_NODE_EXTENSION
 #include <node.h>
 #include <armadillo>
 #include <iostream>
@@ -140,6 +138,20 @@ void matWrap::Initialize(Handle<Object> target) {
 
   tpl->PrototypeTemplate()->Set(String::NewSymbol("subtract"),
       FunctionTemplate::New(subtract)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("elementMultiply"),
+        FunctionTemplate::New(elementMultiply)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("elementDivide"),
+        FunctionTemplate::New(elementDivide)->GetFunction());
+
+    // Object properties
+
+   tpl->InstanceTemplate()->SetAccessor(String::New("n_rows"), GetNrow);
+
+   tpl->InstanceTemplate()->SetAccessor(String::New("n_cols"), GetNcol);
+
+   tpl->InstanceTemplate()->SetAccessor(String::New("n_elem"), GetNelem);
 
 
   constructor = Persistent<Function>::New(tpl->GetFunction());
@@ -499,17 +511,48 @@ Handle<Value> matWrap::add(const Arguments& args) {
   matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
   arma::mat* q = w->GetWrapped();
   arma::mat a = *q;
+  arma::mat c;
 
+  if (args[0]->IsObject())
+  {
   Handle<Object> obj = Handle<Object>::Cast(args[0]);
   matWrap* u = ObjectWrap::Unwrap<matWrap>(obj);
   arma::mat* r = u->GetWrapped();
   arma::mat b = *r;
-
-  arma::mat c = a + b;
+  c = a + b;
+  }
+  else if (args[0]->IsNumber())
+  {
+  double b = args[0]->NumberValue();
+  c = a + b;
+  }
   return scope.Close(NewInstance(c));
 }
 
 Handle<Value> matWrap::subtract(const Arguments& args) {
+  HandleScope scope;
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat a = *q;
+  arma::mat c;
+
+  if (args[0]->IsObject())
+  {
+  Handle<Object> obj = Handle<Object>::Cast(args[0]);
+  matWrap* u = ObjectWrap::Unwrap<matWrap>(obj);
+  arma::mat* r = u->GetWrapped();
+  arma::mat b = *r;
+  c = a - b;
+  }
+  else if (args[0]->IsNumber())
+  {
+  double b = args[0]->NumberValue();
+  c = a - b;
+  }
+  return scope.Close(NewInstance(c));
+}
+
+Handle<Value> matWrap::elementMultiply(const Arguments& args) {
   HandleScope scope;
   matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
   arma::mat* q = w->GetWrapped();
@@ -520,7 +563,45 @@ Handle<Value> matWrap::subtract(const Arguments& args) {
   arma::mat* r = u->GetWrapped();
   arma::mat b = *r;
 
-  arma::mat c = a - b;
+  arma::mat c = a % b;
   return scope.Close(NewInstance(c));
 }
+
+Handle<Value> matWrap::elementDivide(const Arguments& args) {
+  HandleScope scope;
+  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+  arma::mat* q = w->GetWrapped();
+  arma::mat a = *q;
+
+  Handle<Object> obj = Handle<Object>::Cast(args[0]);
+  matWrap* u = ObjectWrap::Unwrap<matWrap>(obj);
+  arma::mat* r = u->GetWrapped();
+  arma::mat b = *r;
+
+  arma::mat c = a / b;
+  return scope.Close(NewInstance(c));
+}
+
+
+ Handle<Value> matWrap::GetNrow(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
+  HandleScope scope;
+  matWrap* w = node::ObjectWrap::Unwrap<matWrap>(info.Holder());
+  arma::mat* q = w->GetWrapped();
+  return scope.Close(Number::New(q->n_rows));
+}
+
+ Handle<Value> matWrap::GetNcol(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
+   HandleScope scope;
+   matWrap* w = node::ObjectWrap::Unwrap<matWrap>(info.Holder());
+   arma::mat* q = w->GetWrapped();
+   return scope.Close(Number::New(q->n_cols));
+ }
+
+
+ Handle<Value> matWrap::GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
+   HandleScope scope;
+   matWrap* w = node::ObjectWrap::Unwrap<matWrap>(info.Holder());
+   arma::mat* q = w->GetWrapped();
+   return scope.Close(Number::New(q->n_elem));
+ }
 

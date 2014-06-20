@@ -1,4 +1,3 @@
-
 #ifndef MATRIX_H
 #define MATRIX_H
 
@@ -18,7 +17,7 @@ class matWrap : public node::ObjectWrap {
       q_ = new arma::mat(q);
       };
   
-  static v8::Handle<v8::Value> NewInstance(arma::mat q);
+    static v8::Handle<v8::Value> NewInstance(arma::mat q);
     
   private:
      matWrap(const v8::Arguments& args);
@@ -63,9 +62,16 @@ class matWrap : public node::ObjectWrap {
    static v8::Handle<v8::Value> swap_rows(const v8::Arguments& args);
    static v8::Handle<v8::Value> swap_cols(const v8::Arguments& args);
 
-  // Operators
+   // Operators
    static v8::Handle<v8::Value> add(const v8::Arguments& args);
    static v8::Handle<v8::Value> subtract(const v8::Arguments& args);
+   static v8::Handle<v8::Value> elementMultiply(const v8::Arguments& args);
+   static v8::Handle<v8::Value> elementDivide(const v8::Arguments& args);
+
+   // Accesors
+   static v8::Handle<v8::Value> GetNrow(v8::Local<v8::String> property, const v8::AccessorInfo& info);
+   static v8::Handle<v8::Value> GetNcol(v8::Local<v8::String> property, const v8::AccessorInfo& info);
+   static v8::Handle<v8::Value> GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info);
 
    // Wrapped object
      arma::mat* q_;

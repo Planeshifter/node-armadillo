@@ -3,6 +3,8 @@
 node-armadillo
 ===========
 
+Still in development.
+
 Interface to the C++ Armadillo linear algebra library for node.js
 
 ## Installation
@@ -15,6 +17,3 @@ npm install armadillo
 ```javascript		
 var arma = require('armadillo');
 ```
-## Implemented Methods 
-
-### Matrices
