@@ -2,9 +2,10 @@
   "targets": [
     {
       "target_name": "armadillo",
-      "sources": ['src/gg.cpp',
+      "sources": ['src/colvec.cpp',
+      			  'src/gg.cpp',
                   'src/matrix.cpp',
-                  'src/helper.cpp'
+                  'src/helper.cpp',
       ],
       'cflags!': [ '-fno-exceptions' ],
       'cflags_cc!': [ '-fno-exceptions' ],

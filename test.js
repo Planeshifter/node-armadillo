@@ -10,14 +10,18 @@ x = new gg.mat("2 2 1; 2 3 1; 4 2 4");
 //if (x.is_colvec()===true){console.log("JA")}
 //else {console.log("NEIN")};
 
+// var myVec = new gg.vec();
 
-var z = x.row(2);
-z.zeros();
+// vec.print();
 
-z.print();
+var z = new gg.colvec(5);
 
+var num = z.at(3)
+
+var diagMat = gg.diagmat(z);
 x.print();
 
+diagMat.print();
 //y = new gg.mat("2 2 1; 2 3 1; 4 2 4");
 //z = x.subtract(y);
 //x.print();

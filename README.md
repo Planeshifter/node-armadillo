@@ -75,3 +75,6 @@ var arma = require('armadillo');
 #### `n_cols`
 
 #### `n_elem`
+
+## Column Vectors
+

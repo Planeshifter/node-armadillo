@@ -5,7 +5,9 @@
 #include <algorithm>
 
 #include "matrix.h"
+#include "colvec.h"
 #include "helper.h"
+
 
 using namespace v8;
 using namespace std;
@@ -67,10 +69,18 @@ Handle<Value> Trace(const Arguments& args) {
 Handle<Value> Diagmat(const Arguments& args){
 	HandleScope scope;
 
+	if (matWrap::HasInstance(args[0])){
 	arma::mat X = UnwrapMatrix(args[0]);
 	arma::mat R = arma::diagmat(X);
-
 	return scope.Close(matWrap::NewInstance(R));
+	} else if (colvecWrap::HasInstance(args[0])){
+	 arma::colvec x = UnwrapColvec(args[0]);
+	 arma::mat R = arma::diagmat(x);
+	 return scope.Close(matWrap::NewInstance(R));
+	}
+
+	return ThrowException(Exception::TypeError(
+		String::New("Function expects a matrix or vector as its sole argument")));
 }
 
 Handle<Value> Kron(const Arguments& args){
@@ -231,8 +241,11 @@ Handle<Value> Qr_econ(const Arguments& args){
 
 
 void Initialize(Handle<Object> target) {
+  // initialize armadillo classes
   matWrap::Initialize(target);
+  colvecWrap::Initialize(target);
 
+  // module functions
   target->Set(String::NewSymbol("accu"),
          FunctionTemplate::New(Accu)->GetFunction());
 

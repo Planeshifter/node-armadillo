@@ -5,6 +5,7 @@
 #include <algorithm>
 
 #include "matrix.h"
+#include "colvec.h"
 #include "helper.h"
 
 using namespace v8;
@@ -17,3 +18,9 @@ arma::mat UnwrapMatrix(Handle<Value> inputMat){
 	return *r;
 }
 
+arma::colvec UnwrapColvec(Handle<Value> inputVec){
+	Handle<Object> obj = Handle<Object>::Cast(inputVec);
+	colvecWrap* u = node::ObjectWrap::Unwrap<colvecWrap>(obj);
+	arma::colvec* r = u->GetWrapped();
+	return *r;
+}

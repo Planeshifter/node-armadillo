@@ -48,7 +48,6 @@ void matWrap::Initialize(Handle<Object> target) {
   Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
   tpl->SetClassName(String::NewSymbol("mat"));
   tpl->InstanceTemplate()->SetInternalFieldCount(1);
-  tpl->SetClassName(String::NewSymbol("matWrap"));
   
   // Prototype
   tpl->PrototypeTemplate()->Set(String::NewSymbol("ones"),
