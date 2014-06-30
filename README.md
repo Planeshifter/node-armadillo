@@ -20,33 +20,37 @@ var arma = require('armadillo');
 
 ## General
 
-### `Accu`
+#### `accu`
 
-### `Cond`
+#### `cond`
 
-### `Rank`
+#### `rank`
 
-### `Trace`
+#### `trace`
 
-### `Kron`
+### Vector/Matrix/Cube Valued Functions of Vectors/Matrices/Cubes
 
-### `Trans`
+#### `diagmat`
 
-### `Trimatu`
+#### `kron`
 
-### `Trimatl`
+#### `trans`
+
+#### `trimatu`
+
+#### `trimatl`
 
 ### Decompositions, Factorisations, Inverses and Equation Solvers:
 
-#### `Chol`
+#### `chol`
 
-#### `Inv`
+#### `inv`
 
-#### `Pinv`
+#### `pinv`
 
-#### `Qr`
+#### `qr`
 
-#### `Qr_econ`
+#### `qr_econ`
 
 ## Matrices
 

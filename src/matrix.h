@@ -7,6 +7,8 @@
 #include <vector>
 #include <algorithm> 
 
+using namespace v8;
+
 class matWrap : public node::ObjectWrap {
   
   public:  
@@ -19,10 +21,18 @@ class matWrap : public node::ObjectWrap {
   
     static v8::Handle<v8::Value> NewInstance(arma::mat q);
     
+    // check whether something is an instance of the matrix class
+     static bool HasInstance(v8::Handle<v8::Value> value) {
+ 		 if (!value->IsObject()) return false;
+ 		 v8::Local<Object> obj = value->ToObject();
+ 		 return constructor->HasInstance(obj);
+ 		 }
+
   private:
      matWrap(const v8::Arguments& args);
     ~matWrap();
-    static v8::Persistent<v8::Function> constructor;
+
+    static v8::Persistent<v8::FunctionTemplate> constructor;
     static v8::Handle<v8::Value> New(const v8::Arguments& args);
 
   // Wrapped methods
@@ -79,7 +89,7 @@ class matWrap : public node::ObjectWrap {
    static v8::Handle<v8::Value> GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info);
 
    // Wrapped object
-     arma::mat* q_;
+   arma::mat* q_;
 };
 
 #endif

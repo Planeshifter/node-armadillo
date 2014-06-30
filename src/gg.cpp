@@ -49,16 +49,29 @@ Handle<Value> Rank(const Arguments& args){
 Handle<Value> Trace(const Arguments& args) {
   HandleScope scope;
 
+  if(matWrap::HasInstance(args[0]) != true) {
+	  return ThrowException(Exception::TypeError(
+		  String::New("Function expects a (square) matrix as its sole argument")));
+  }
+
   arma::mat A = UnwrapMatrix(args[0]);
-
   double tr = arma::trace(A);
-
   return scope.Close(Number::New(tr));
 }
 
 // element-wise functions:
 
 // Vector/Matrix/Cube Valued Functions of Vectors/Matrices/Cubes
+
+
+Handle<Value> Diagmat(const Arguments& args){
+	HandleScope scope;
+
+	arma::mat X = UnwrapMatrix(args[0]);
+	arma::mat R = arma::diagmat(X);
+
+	return scope.Close(matWrap::NewInstance(R));
+}
 
 Handle<Value> Kron(const Arguments& args){
 	HandleScope scope;
@@ -233,6 +246,9 @@ void Initialize(Handle<Object> target) {
        FunctionTemplate::New(Trace)->GetFunction());
 
   // Vector/Matrix/Cube Valued Functions of Vectors/Matrices/Cubes
+
+  target->Set(String::NewSymbol("diagmat"),
+       FunctionTemplate::New(Diagmat)->GetFunction());
 
   target->Set(String::NewSymbol("kron"),
        FunctionTemplate::New(Kron)->GetFunction());

@@ -10,7 +10,7 @@
 using namespace v8;
 using namespace std;
 
-Persistent<Function> matWrap::constructor;
+Persistent<FunctionTemplate> matWrap::constructor;
 
 // Supported implementations:
 // mat ( )
@@ -47,7 +47,8 @@ void matWrap::Initialize(Handle<Object> target) {
    // Prepare constructor template
   Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
   tpl->SetClassName(String::NewSymbol("mat"));
-  tpl->InstanceTemplate()->SetInternalFieldCount(1); 
+  tpl->InstanceTemplate()->SetInternalFieldCount(1);
+  tpl->SetClassName(String::NewSymbol("matWrap"));
   
   // Prototype
   tpl->PrototypeTemplate()->Set(String::NewSymbol("ones"),
@@ -163,8 +164,8 @@ void matWrap::Initialize(Handle<Object> target) {
    tpl->InstanceTemplate()->SetAccessor(String::New("n_elem"), GetNelem);
 
 
-  constructor = Persistent<Function>::New(tpl->GetFunction());
-  target->Set(String::NewSymbol("mat"), constructor);
+  constructor = Persistent<FunctionTemplate>::New(tpl);
+  target->Set(String::NewSymbol("mat"), constructor->GetFunction());
 }
 
 
@@ -228,7 +229,7 @@ Handle<Value> matWrap::t(const Arguments& args) {
 Handle<Value> matWrap::NewInstance(arma::mat q) {
   HandleScope scope;
   
-  Local<Object> instance = constructor->NewInstance(0, NULL);
+  Local<Object> instance = constructor->GetFunction()->NewInstance(0, NULL);
   matWrap* w = node::ObjectWrap::Unwrap<matWrap>(instance);
   w->SetWrapped(q);
 

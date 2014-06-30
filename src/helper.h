@@ -10,5 +10,6 @@
 using namespace v8;
 
 arma::mat UnwrapMatrix(Handle<Value> inputMat);
+bool	  IsMatrix(Handle<Value> inputObj);
 
 #endif
