@@ -10,9 +10,17 @@ x = new gg.mat("2 2 1; 2 3 1; 4 2 4");
 //if (x.is_colvec()===true){console.log("JA")}
 //else {console.log("NEIN")};
 
-y = new gg.mat("2 2 1; 2 3 1; 4 2 4");
-z = x.subtract(y);
+
+var z = x.row(2);
+z.zeros();
+
+z.print();
+
 x.print();
+
+//y = new gg.mat("2 2 1; 2 3 1; 4 2 4");
+//z = x.subtract(y);
+//x.print();
 //x.randn();
 // x.fill(2.2);
 // = x.n_rows();
@@ -26,7 +34,7 @@ x.print();
 //console.log(x.at(2,2));
 // setTimeout(x.print(),2000);
 
-y2 = gg.chol(x);
+//y2 = gg.chol(x);
 
 //r = new gg.mat();
 //q = new gg.mat();
@@ -35,13 +43,11 @@ y2 = gg.chol(x);
 //q.print();
 //r.print();
 
-x.print();
+//x.print();
 
-l = gg.trimatl(x);
-l.print();
+//gg.pinv(x);
 
-u = gg.trimatu(x);
-u.print();
+//x.print();
 
 
 //console.log(util.inspect(x));

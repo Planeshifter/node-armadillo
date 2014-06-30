@@ -62,6 +62,11 @@ class matWrap : public node::ObjectWrap {
    static v8::Handle<v8::Value> swap_rows(const v8::Arguments& args);
    static v8::Handle<v8::Value> swap_cols(const v8::Arguments& args);
 
+   // Submatrix Views
+
+   static v8::Handle<v8::Value> col(const v8::Arguments& args);
+   static v8::Handle<v8::Value> row(const v8::Arguments& args);
+
    // Operators
    static v8::Handle<v8::Value> add(const v8::Arguments& args);
    static v8::Handle<v8::Value> subtract(const v8::Arguments& args);

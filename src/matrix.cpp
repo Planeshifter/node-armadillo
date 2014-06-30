@@ -5,6 +5,7 @@
 #include <algorithm> 
 
 #include "matrix.h"
+#include "helper.h"
 
 using namespace v8;
 using namespace std;
@@ -132,6 +133,14 @@ void matWrap::Initialize(Handle<Object> target) {
       FunctionTemplate::New(swap_cols)->GetFunction());
 
 
+  // Submatrix views
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("col"),
+		  FunctionTemplate::New(col)->GetFunction());
+
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("row"),
+		  FunctionTemplate::New(row)->GetFunction());
+
   // Operators
   tpl->PrototypeTemplate()->Set(String::NewSymbol("add"),
       FunctionTemplate::New(add)->GetFunction());
@@ -167,6 +176,7 @@ Handle<Value> matWrap::New(const Arguments& args) {
 
   return args.This();
 }
+
 
 Handle<Value> matWrap::ones(const Arguments& args) {
   HandleScope scope;
@@ -204,7 +214,7 @@ Handle<Value> matWrap::fill(const Arguments& args) {
   HandleScope scope;
   matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
   arma::mat* q = w->GetWrapped();
-  *q = q->fill(3.2);
+  *q = q->fill(args[0]->NumberValue());
   return scope.Close(Undefined());
 }
 
@@ -505,7 +515,29 @@ Handle<Value> matWrap::swap_cols(const Arguments& args) {
   return scope.Close(Undefined());
 }
 
+// Submatrix views
+
+Handle<Value> matWrap::col(const Arguments& args){
+	HandleScope scope;
+
+	arma::mat A = UnwrapMatrix(args.This());
+	arma::mat A_col = A.col(args[0]->NumberValue());
+
+	return scope.Close(NewInstance(A_col));
+}
+
+Handle<Value> matWrap::row(const Arguments& args){
+	HandleScope scope;
+
+	arma::mat A = UnwrapMatrix(args.This());
+
+	arma::mat A_row = A.row(args[0]->NumberValue());
+
+	return scope.Close(NewInstance(A_row));
+}
+
 // Operators
+
 Handle<Value> matWrap::add(const Arguments& args) {
   HandleScope scope;
   matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
@@ -582,6 +614,7 @@ Handle<Value> matWrap::elementDivide(const Arguments& args) {
   return scope.Close(NewInstance(c));
 }
 
+// Object properties
 
  Handle<Value> matWrap::GetNrow(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
   HandleScope scope;

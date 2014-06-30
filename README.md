@@ -17,3 +17,57 @@ npm install armadillo
 ```javascript		
 var arma = require('armadillo');
 ```
+
+## General
+
+### `Accu`
+
+### `Cond`
+
+### `Rank`
+
+### `Trace`
+
+### `Kron`
+
+### `Trans`
+
+### `Trimatu`
+
+### `Trimatl`
+
+### Decompositions, Factorisations, Inverses and Equation Solvers:
+
+#### `Chol`
+
+#### `Inv`
+
+#### `Pinv`
+
+#### `Qr`
+
+#### `Qr_econ`
+
+## Matrices
+
+### Operators
+
+#### `add`
+
+#### `subtract`
+
+#### `elementDivide`
+
+#### `elementMultiply`
+
+### Methods
+
+#### `print`
+
+### Properties
+
+#### `n_rows`
+
+#### `n_cols`
+
+#### `n_elem`

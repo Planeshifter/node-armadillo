@@ -5,16 +5,10 @@
 #include <algorithm>
 
 #include "matrix.h"
+#include "helper.h"
 
 using namespace v8;
 using namespace std;
-
-arma::mat UnwrapMatrix(Handle<Value> inputMat){
-	Handle<Object> obj = Handle<Object>::Cast(inputMat);
-	matWrap* u = node::ObjectWrap::Unwrap<matWrap>(obj);
-	arma::mat* r = u->GetWrapped();
-	return *r;
-}
 
 Handle<Value> Accu(const Arguments& args){
 	HandleScope scope;
@@ -124,6 +118,56 @@ Handle<Value> Inv(const Arguments &args){
 	return scope.Close(matWrap::NewInstance(X_inv));
 }
 
+Handle<Value> Pinv(const Arguments &args){
+	HandleScope scope;
+
+	if(args[0]->IsObject() && args[1]->IsObject()){
+
+		Handle<Object> B = Handle<Object>::Cast(args[0]);
+		matWrap* B_wrap = node::ObjectWrap::Unwrap<matWrap>(B);
+		arma::mat* B_pointer = B_wrap->GetWrapped();
+		arma::mat B_res = *B_pointer;
+
+		Handle<Object> A = Handle<Object>::Cast(args[1]);
+		matWrap* A_wrap = node::ObjectWrap::Unwrap<matWrap>(A);
+		arma::mat* A_pointer = A_wrap->GetWrapped();
+		arma::mat A_res = *A_pointer;
+
+		if (args[2]->IsNumber() && args[3]->IsString()){
+			v8::String::Utf8Value param3(args[3]->ToString());
+			const char *method = *param3;
+			arma::pinv(B_res, A_res, args[2]->NumberValue(),method);
+		} else if (args[2]->IsNumber()){
+			arma::pinv(B_res, A_res, args[2]->NumberValue());
+		} else {
+			arma::pinv(B_res, A_res);
+		}
+
+		// assign decomposed matrices to input matrices
+		*B_pointer = B_res;
+		*A_pointer = A_res;
+
+		return scope.Close(Undefined());
+	}
+	else {
+		arma::mat A = UnwrapMatrix(args[0]);
+		arma::mat retA;
+		if (args[1]->IsNumber() && args[2]->IsString())
+		{
+			v8::String::Utf8Value param2(args[2]->ToString());
+			const char *method = *param2;
+			retA = arma::pinv(A, args[1]->NumberValue(), method);
+		}
+		else if (args[1]->IsNumber()){
+			retA = arma::pinv(A, args[1]->NumberValue());
+		}
+		else {
+			retA = arma::pinv(A);
+		}
+	return scope.Close(matWrap::NewInstance(retA));
+	}
+}
+
 Handle<Value> Qr(const Arguments& args){
 	HandleScope scope;
 
@@ -140,6 +184,30 @@ Handle<Value> Qr(const Arguments& args){
 	arma::mat R_res = *R_pointer;
 
 	arma::qr(Q_res, R_res, X);
+
+	// assign decomposed matrices to input matrices
+	*R_pointer = R_res;
+	*Q_pointer = Q_res;
+
+	return scope.Close(Undefined());
+}
+
+Handle<Value> Qr_econ(const Arguments& args){
+	HandleScope scope;
+
+	arma::mat X = UnwrapMatrix(args[2]);
+
+	Handle<Object> Q_obj = Handle<Object>::Cast(args[0]);
+	matWrap* Q_wrap = node::ObjectWrap::Unwrap<matWrap>(Q_obj);
+	arma::mat* Q_pointer = Q_wrap->GetWrapped();
+	arma::mat Q_res = *Q_pointer;
+
+	Handle<Object> R_obj = Handle<Object>::Cast(args[1]);
+	matWrap* R_wrap = node::ObjectWrap::Unwrap<matWrap>(R_obj);
+	arma::mat* R_pointer = R_wrap->GetWrapped();
+	arma::mat R_res = *R_pointer;
+
+	arma::qr_econ(Q_res, R_res, X);
 
 	// assign decomposed matrices to input matrices
 	*R_pointer = R_res;
@@ -186,8 +254,14 @@ void Initialize(Handle<Object> target) {
   target->Set(String::NewSymbol("inv"),
 		  FunctionTemplate::New(Inv)->GetFunction());
 
+  target->Set(String::NewSymbol("pinv"),
+ 		  FunctionTemplate::New(Pinv)->GetFunction());
+
   target->Set(String::NewSymbol("qr"),
 		  FunctionTemplate::New(Qr)->GetFunction());
+
+  target->Set(String::NewSymbol("qr_econ"),
+		  FunctionTemplate::New(Qr_econ)->GetFunction());
 
 }
 
