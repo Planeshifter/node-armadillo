@@ -6,60 +6,11 @@
 
 #include "matrix.h"
 #include "colvec.h"
+#include "rowvec.h"
 #include "helper.h"
-
 
 using namespace v8;
 using namespace std;
-
-Handle<Value> Accu(const Arguments& args){
-	HandleScope scope;
-
-	arma::mat A = UnwrapMatrix(args[0]);
-
-	double x = accu(A);
-	return scope.Close(Number::New(x));
-}
-
-Handle<Value> Cond(const Arguments& args){
-	HandleScope scope;
-
-	arma::mat A = UnwrapMatrix(args[0]);
-
-	double c = cond(A);
-	return scope.Close(Number::New(c));
-
-}
-
-Handle<Value> Rank(const Arguments& args){
-	HandleScope scope;
-
-	arma::mat A = UnwrapMatrix(args[0]);
-	int ret;
-
-	if (args.Length() == 2){
-	double tolerance = args[1]->NumberValue();
-		ret = arma::rank(A, tolerance);
-	}
-	else {
-		ret = arma::rank(A);
-	}
-
-	return scope.Close(Number::New(ret));
-}
-
-Handle<Value> Trace(const Arguments& args) {
-  HandleScope scope;
-
-  if(matWrap::HasInstance(args[0]) != true) {
-	  return ThrowException(Exception::TypeError(
-		  String::New("Function expects a (square) matrix as its sole argument")));
-  }
-
-  arma::mat A = UnwrapMatrix(args[0]);
-  double tr = arma::trace(A);
-  return scope.Close(Number::New(tr));
-}
 
 // element-wise functions:
 
@@ -209,6 +160,19 @@ Handle<Value> Trunc_log(const Arguments& args){
 
 Handle<Value> Pow(const Arguments& args){
 	HandleScope scope;
+	if (args[0]->IsObject() && args[1]->IsNumber()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::pow(A, args[1]->NumberValue());
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::pow(A, args[1]->NumberValue());
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+	return scope.Close(ThrowException(Exception::TypeError(
+					 String::New("Expects matrix, vector or field as its first argument, and a numeric data type as its second."))));
 }
 
 Handle<Value> Sqrt(const Arguments& args){
@@ -319,6 +283,122 @@ Handle<Value> Sign(const Arguments& args){
 				 String::New("Function expects a matrix, vector or field as its sole argument."))));
 }
 
+// Scalar Valued Functions of Vectors/Matrices/Cubes
+
+Handle<Value> Accu(const Arguments& args){
+	HandleScope scope;
+
+	arma::mat A = UnwrapMatrix(args[0]);
+
+	double x = accu(A);
+	return scope.Close(Number::New(x));
+}
+
+Handle<Value> Cond(const Arguments& args){
+	HandleScope scope;
+
+	arma::mat A = UnwrapMatrix(args[0]);
+
+	double c = cond(A);
+	return scope.Close(Number::New(c));
+
+}
+
+Handle<Value> Det(const Arguments& args){
+	HandleScope scope;
+
+	if(matWrap::HasInstance(args[0]) != true){
+		return ThrowException(Exception::TypeError(
+		String::New("det() expects a (square) matrix as its first argument")));
+	}
+
+	double ret;
+	arma::mat A = UnwrapMatrix(args[0]);
+
+	if(args[1]->IsString()){
+		v8::String::Utf8Value param1(args[1]->ToString());
+		const char *method = *param1;
+		ret = arma::det(A, method);
+	} else {
+		ret = arma::det(A);
+	}
+
+	return scope.Close(Number::New(ret));
+
+}
+
+Handle<Value> Dot(const Arguments& args){
+	HandleScope scope;
+	if (args[0]->IsObject() && args[1]->IsObject()){
+		if(matWrap::HasInstance(args[0]) == true){
+			arma::mat A = UnwrapMatrix(args[0]);
+
+			if(matWrap::HasInstance(args[1]) == true){
+
+					arma::mat B = UnwrapMatrix(args[1]);
+					double ret = arma::dot(A,B);
+					return scope.Close(Number::New(ret));
+
+					} else if (colvecWrap::HasInstance(args[1]) == true){
+
+						arma::colvec B = UnwrapColvec(args[1]);
+						double ret = arma::dot(A,B);
+						return scope.Close(Number::New(ret));
+					}
+
+		} else if (colvecWrap::HasInstance(args[0]) == true){
+			arma::colvec A = UnwrapColvec(args[0]);
+
+			if(matWrap::HasInstance(args[1]) == true){
+
+					arma::mat B = UnwrapMatrix(args[1]);
+					double ret = arma::dot(A,B);
+					return scope.Close(Number::New(ret));
+
+					} else if (colvecWrap::HasInstance(args[1]) == true){
+
+						arma::colvec B = UnwrapColvec(args[1]);
+						double ret = arma::dot(A,B);
+						return scope.Close(Number::New(ret));
+					}
+		}
+	}
+	else {
+		return ThrowException(Exception::TypeError(
+		String::New("dot() expects two vectors with the same number of elements as its arguments.")));
+		}
+}
+
+Handle<Value> Rank(const Arguments& args){
+	HandleScope scope;
+
+	arma::mat A = UnwrapMatrix(args[0]);
+	int ret;
+
+	if (args.Length() == 2){
+	double tolerance = args[1]->NumberValue();
+		ret = arma::rank(A, tolerance);
+	}
+	else {
+		ret = arma::rank(A);
+	}
+
+	return scope.Close(Number::New(ret));
+}
+
+Handle<Value> Trace(const Arguments& args) {
+  HandleScope scope;
+
+  if(matWrap::HasInstance(args[0]) != true) {
+	  return ThrowException(Exception::TypeError(
+		  String::New("Function expects a (square) matrix as its sole argument")));
+  }
+
+  arma::mat A = UnwrapMatrix(args[0]);
+  double tr = arma::trace(A);
+  return scope.Close(Number::New(tr));
+}
+
 // Scalar/Vector Valued Functions of Vectors/Matrices
 
 Handle<Value> All(const Arguments& args){
@@ -333,6 +413,132 @@ Handle<Value> All(const Arguments& args){
 
 }
 
+Handle<Value> Diagvec(const Arguments& args){
+	HandleScope scope;
+
+	if(matWrap::HasInstance(args[0])==false){
+	 return ThrowException(Exception::TypeError(
+	 				String::New("Function expects a matrix as its first argument")));
+	}
+
+	arma::colvec ret;
+	arma::mat X = UnwrapMatrix(args[0]);
+
+	if(args[1]->IsNumber() == true){
+		ret = arma::diagvec(X, args[1]->NumberValue());
+	} else {
+		ret = arma::diagvec(X);
+	}
+
+	return scope.Close(colvecWrap::NewInstance(ret));
+}
+
+Handle<Value> Min(const Arguments& args){
+	HandleScope scope;
+		if(colvecWrap::HasInstance(args[0]) == true) {
+				double ret;
+				arma::colvec X = UnwrapColvec(args[0]);
+				ret = arma::min(X);
+				return scope.Close(Number::New(ret));
+			}
+
+		if(matWrap::HasInstance(args[0]) == true && matWrap::HasInstance(args[1]) == true){
+			arma::mat X = UnwrapMatrix(args[0]);
+			arma::mat Y = UnwrapMatrix(args[1]);
+			arma::mat ret = arma::min(X,Y);
+			return scope.Close(matWrap::NewInstance(ret));
+		}
+
+		if(matWrap::HasInstance(args[0]) == true) {
+			arma::mat X = UnwrapMatrix(args[0]);
+			if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
+			  arma::colvec ret = arma::min(X, args[1]->NumberValue());
+			  return scope.Close(colvecWrap::NewInstance(ret));
+			} else {
+			  arma::rowvec ret = arma::min(X);
+			  return scope.Close(rowvecWrap::NewInstance(ret));
+			}
+		}
+		return ThrowException(Exception::TypeError(
+			String::New("Function expects a matrix or vector as its first argument")));
+}
+
+Handle<Value> Max(const Arguments& args){
+	HandleScope scope;
+		if(colvecWrap::HasInstance(args[0]) == true) {
+				double ret;
+				arma::colvec X = UnwrapColvec(args[0]);
+				ret = arma::max(X);
+				return scope.Close(Number::New(ret));
+			}
+
+		if(matWrap::HasInstance(args[0]) == true && matWrap::HasInstance(args[1]) == true){
+				arma::mat X = UnwrapMatrix(args[0]);
+				arma::mat Y = UnwrapMatrix(args[1]);
+				arma::mat ret = arma::max(X,Y);
+				return scope.Close(matWrap::NewInstance(ret));
+			}
+
+		if(matWrap::HasInstance(args[0]) == true) {
+			arma::mat X = UnwrapMatrix(args[0]);
+			if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
+			  arma::colvec ret = arma::max(X, args[1]->NumberValue());
+			  return scope.Close(colvecWrap::NewInstance(ret));
+			} else {
+			  arma::rowvec ret = arma::max(X);
+			  return scope.Close(rowvecWrap::NewInstance(ret));
+			}
+		}
+
+		return ThrowException(Exception::TypeError(
+			String::New("Function expects a matrix or vector as its first argument")));
+}
+
+Handle<Value> Prod(const Arguments& args){
+	HandleScope scope;
+	if(colvecWrap::HasInstance(args[0]) == true) {
+			double ret;
+			arma::colvec X = UnwrapColvec(args[0]);
+			ret = arma::prod(X);
+			return scope.Close(Number::New(ret));
+		}
+		if(matWrap::HasInstance(args[0]) == true) {
+			arma::mat X = UnwrapMatrix(args[0]);
+			if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
+			  arma::colvec ret = arma::prod(X, args[1]->NumberValue());
+			  return scope.Close(colvecWrap::NewInstance(ret));
+			} else {
+			  arma::rowvec ret = arma::prod(X);
+			  return scope.Close(rowvecWrap::NewInstance(ret));
+			}
+		}
+		return ThrowException(Exception::TypeError(
+			String::New("Function expects a matrix or vector as its first argument")));
+}
+
+Handle<Value> Sum(const Arguments& args){
+	HandleScope scope;
+	if(colvecWrap::HasInstance(args[0]) == true) {
+		double ret;
+		arma::colvec X = UnwrapColvec(args[0]);
+		ret = arma::sum(X);
+		return scope.Close(Number::New(ret));
+	}
+	if(matWrap::HasInstance(args[0]) == true) {
+		arma::mat X = UnwrapMatrix(args[0]);
+		if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
+		  arma::colvec ret = arma::sum(X,args[1]->NumberValue());
+		  return scope.Close(colvecWrap::NewInstance(ret));
+		} else {
+		  arma::rowvec ret = arma::sum(X);
+		  return scope.Close(rowvecWrap::NewInstance(ret));
+		}
+	}
+
+	return ThrowException(Exception::TypeError(
+		String::New("Function expects a matrix or vector as its first argument")));
+}
+
 Handle<Value> Mean(const Arguments& args){
 	HandleScope scope;
 	if(colvecWrap::HasInstance(args[0]) == true) {
@@ -341,6 +547,9 @@ Handle<Value> Mean(const Arguments& args){
 	} else if(matWrap::HasInstance(args[0]) == true){
 
 	}
+
+	return ThrowException(Exception::TypeError(
+			String::New("Function expects a matrix or vector as its first argument")));
 
 }
 
@@ -353,6 +562,9 @@ Handle<Value> Median(const Arguments& args){
 
 	}
 
+	return ThrowException(Exception::TypeError(
+			String::New("Function expects a matrix or vector as its first argument")));
+
 }
 
 Handle<Value> Stddev(const Arguments& args){
@@ -363,6 +575,9 @@ Handle<Value> Stddev(const Arguments& args){
 	} else if(matWrap::HasInstance(args[0]) == true){
 
 	}
+
+	return ThrowException(Exception::TypeError(
+			String::New("Function expects a matrix or vector as its first argument")));
 
 }
 
@@ -375,7 +590,11 @@ Handle<Value> Var(const Arguments& args){
 
 	}
 
+	return ThrowException(Exception::TypeError(
+			String::New("Function expects a matrix or vector as its first argument")));
+
 }
+
 
 // Vector/Matrix/Cube Valued Functions of Vectors/Matrices/Cubes
 
@@ -558,6 +777,7 @@ void Initialize(Handle<Object> target) {
   // initialize armadillo classes
   matWrap::Initialize(target);
   colvecWrap::Initialize(target);
+  rowvecWrap::Initialize(target);
 
   // module functions
   target->Set(String::NewSymbol("accu"),
@@ -565,6 +785,12 @@ void Initialize(Handle<Object> target) {
 
   target->Set(String::NewSymbol("cond"),
          FunctionTemplate::New(Cond)->GetFunction());
+
+  target->Set(String::NewSymbol("det"),
+         FunctionTemplate::New(Det)->GetFunction());
+
+  target->Set(String::NewSymbol("dot"),
+         FunctionTemplate::New(Dot)->GetFunction());
 
   target->Set(String::NewSymbol("rank"),
          FunctionTemplate::New(Rank)->GetFunction());
@@ -623,6 +849,21 @@ void Initialize(Handle<Object> target) {
 
   target->Set(String::NewSymbol("all"),
        FunctionTemplate::New(All)->GetFunction());
+
+  target->Set(String::NewSymbol("diagvec"),
+       FunctionTemplate::New(Diagvec)->GetFunction());
+
+  target->Set(String::NewSymbol("min"),
+       FunctionTemplate::New(Min)->GetFunction());
+
+  target->Set(String::NewSymbol("max"),
+       FunctionTemplate::New(Max)->GetFunction());
+
+  target->Set(String::NewSymbol("prod"),
+       FunctionTemplate::New(Prod)->GetFunction());
+
+  target->Set(String::NewSymbol("sum"),
+       FunctionTemplate::New(Sum)->GetFunction());
 
   target->Set(String::NewSymbol("mean"),
        FunctionTemplate::New(Mean)->GetFunction());

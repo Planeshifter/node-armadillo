@@ -3,7 +3,8 @@
     {
       "target_name": "armadillo",
       "sources": ['src/colvec.cpp',
-      			  'src/gg.cpp',
+      			  'src/rowvec.cpp',	
+      			  'src/gg.cpp', 
                   'src/matrix.cpp',
                   'src/helper.cpp',
       ],

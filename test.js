@@ -3,7 +3,8 @@ console.log('hier kommt unser neues modul')
 var gg = require('./build/Release/armadillo');
 var util = require('util');
 
-x = new gg.mat("2 2 1; 2 3 1; 4 2 4");
+x = new gg.mat("2 2 1; 2 3 2; 4 2 4");
+y = new gg.mat("1 1 2; 3 2 3; 2 4 2")
 //x.print();
 //x.shed_col(1);
 //x.shed_rows(0,1);
@@ -15,18 +16,28 @@ x = new gg.mat("2 2 1; 2 3 1; 4 2 4");
 // vec.print();
 
 var z = new gg.Colvec(5);
+var r = new gg.Rowvec(3);
 
-z.randn();
+x.print();
 
-z2 = gg.exp(z)
+var t = gg.max(x,y);
 
-z.print();
-z2.print();
+t.print();
+
+
+//z.randn();
+
+//z2 = gg.exp(z)
+
+//z.print();
+//z2.print();
 
 x.randn()
-x.print();
+//x.print();
 x3 = gg.sign(x);
-x3.print();
+//x3.print();
+
+//console.log(gg.det(x3))
 
 
 //y = new gg.mat("2 2 1; 2 3 1; 4 2 4");
