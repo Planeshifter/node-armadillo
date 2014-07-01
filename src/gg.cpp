@@ -63,6 +63,320 @@ Handle<Value> Trace(const Arguments& args) {
 
 // element-wise functions:
 
+Handle<Value> Exp(const Arguments& args){
+	HandleScope scope;
+	if (args[0]->IsObject()){
+		if(colvecWrap::HasInstance(args[0]) == true) {
+			arma::colvec A = UnwrapColvec(args[0]);
+			arma::colvec B = arma::exp(A);
+			return scope.Close(colvecWrap::NewInstance(B));
+		} else if (matWrap::HasInstance(args[0]) == true){
+			arma::mat A = UnwrapMatrix(args[0]);
+			arma::mat B = arma::exp(A);
+			return scope.Close(matWrap::NewInstance(B));
+		}
+	}
+
+	return scope.Close(ThrowException(Exception::TypeError(
+		 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Exp2(const Arguments& args){
+	HandleScope scope;
+		if (args[0]->IsObject()){
+			if(colvecWrap::HasInstance(args[0]) == true) {
+				arma::colvec A = UnwrapColvec(args[0]);
+				arma::colvec B = arma::exp2(A);
+				return scope.Close(colvecWrap::NewInstance(B));
+			} else if (matWrap::HasInstance(args[0]) == true){
+				arma::mat A = UnwrapMatrix(args[0]);
+				arma::mat B = arma::exp2(A);
+				return scope.Close(matWrap::NewInstance(B));
+			}
+		}
+
+		return scope.Close(ThrowException(Exception::TypeError(
+			 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Exp10(const Arguments& args){
+	HandleScope scope;
+		if (args[0]->IsObject()){
+			if(colvecWrap::HasInstance(args[0]) == true) {
+				arma::colvec A = UnwrapColvec(args[0]);
+				arma::colvec B = arma::exp10(A);
+				return scope.Close(colvecWrap::NewInstance(B));
+			} else if (matWrap::HasInstance(args[0]) == true){
+				arma::mat A = UnwrapMatrix(args[0]);
+				arma::mat B = arma::exp10(A);
+				return scope.Close(matWrap::NewInstance(B));
+			}
+		}
+
+		return scope.Close(ThrowException(Exception::TypeError(
+			 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Trunc_exp(const Arguments& args){
+	HandleScope scope;
+		if (args[0]->IsObject()){
+			if(colvecWrap::HasInstance(args[0]) == true) {
+				arma::colvec A = UnwrapColvec(args[0]);
+				arma::colvec B = arma::trunc_exp(A);
+				return scope.Close(colvecWrap::NewInstance(B));
+			} else if (matWrap::HasInstance(args[0]) == true){
+				arma::mat A = UnwrapMatrix(args[0]);
+				arma::mat B = arma::trunc_exp(A);
+				return scope.Close(matWrap::NewInstance(B));
+			}
+		}
+
+		return scope.Close(ThrowException(Exception::TypeError(
+			 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Log(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::log(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::log(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Log2(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::log2(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::log2(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Log10(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::log10(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::log10(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Trunc_log(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::trunc_log(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::trunc_log(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Pow(const Arguments& args){
+	HandleScope scope;
+}
+
+Handle<Value> Sqrt(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::sqrt(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::sqrt(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Square(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::square(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::square(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Floor(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::floor(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::floor(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Ceil(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::ceil(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::ceil(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Round(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::round(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::round(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+Handle<Value> Sign(const Arguments& args){
+	HandleScope scope;
+			if (args[0]->IsObject()){
+				if(colvecWrap::HasInstance(args[0]) == true) {
+					arma::colvec A = UnwrapColvec(args[0]);
+					arma::colvec B = arma::sign(A);
+					return scope.Close(colvecWrap::NewInstance(B));
+				} else if (matWrap::HasInstance(args[0]) == true){
+					arma::mat A = UnwrapMatrix(args[0]);
+					arma::mat B = arma::sign(A);
+					return scope.Close(matWrap::NewInstance(B));
+				}
+			}
+
+			return scope.Close(ThrowException(Exception::TypeError(
+				 String::New("Function expects a matrix, vector or field as its sole argument."))));
+}
+
+// Scalar/Vector Valued Functions of Vectors/Matrices
+
+Handle<Value> All(const Arguments& args){
+	HandleScope scope;
+	if(colvecWrap::HasInstance(args[0]) == true) {
+		arma::colvec X = UnwrapColvec(args[0]);
+		bool status = arma::all(X);
+		return scope.Close(Boolean::New(status));
+	} else if(matWrap::HasInstance(args[0]) == true){
+
+	}
+
+}
+
+Handle<Value> Mean(const Arguments& args){
+	HandleScope scope;
+	if(colvecWrap::HasInstance(args[0]) == true) {
+		arma::colvec X = UnwrapColvec(args[0]);
+		return scope.Close(Number::New(arma::mean(X)));
+	} else if(matWrap::HasInstance(args[0]) == true){
+
+	}
+
+}
+
+Handle<Value> Median(const Arguments& args){
+	HandleScope scope;
+	if(colvecWrap::HasInstance(args[0]) == true) {
+		arma::colvec X = UnwrapColvec(args[0]);
+		return scope.Close(Number::New(arma::median(X)));
+	} else if(matWrap::HasInstance(args[0]) == true){
+
+	}
+
+}
+
+Handle<Value> Stddev(const Arguments& args){
+	HandleScope scope;
+	if(colvecWrap::HasInstance(args[0]) == true) {
+		arma::colvec X = UnwrapColvec(args[0]);
+		return scope.Close(Number::New(arma::stddev(X)));
+	} else if(matWrap::HasInstance(args[0]) == true){
+
+	}
+
+}
+
+Handle<Value> Var(const Arguments& args){
+	HandleScope scope;
+	if(colvecWrap::HasInstance(args[0]) == true) {
+		arma::colvec X = UnwrapColvec(args[0]);
+		return scope.Close(Number::New(arma::var(X)));
+	} else if(matWrap::HasInstance(args[0]) == true){
+
+	}
+
+}
+
 // Vector/Matrix/Cube Valued Functions of Vectors/Matrices/Cubes
 
 
@@ -257,6 +571,70 @@ void Initialize(Handle<Object> target) {
 
   target->Set(String::NewSymbol("trace"),
        FunctionTemplate::New(Trace)->GetFunction());
+
+  // element-wise functions:
+
+  target->Set(String::NewSymbol("exp"),
+       FunctionTemplate::New(Exp)->GetFunction());
+
+  target->Set(String::NewSymbol("exp2"),
+       FunctionTemplate::New(Exp2)->GetFunction());
+
+  target->Set(String::NewSymbol("exp10"),
+       FunctionTemplate::New(Exp10)->GetFunction());
+
+  target->Set(String::NewSymbol("trunc_exp"),
+       FunctionTemplate::New(Trunc_exp)->GetFunction());
+
+  target->Set(String::NewSymbol("log"),
+       FunctionTemplate::New(Log)->GetFunction());
+
+  target->Set(String::NewSymbol("log2"),
+       FunctionTemplate::New(Log2)->GetFunction());
+
+  target->Set(String::NewSymbol("log10"),
+       FunctionTemplate::New(Log10)->GetFunction());
+
+  target->Set(String::NewSymbol("trunc_log"),
+       FunctionTemplate::New(Trunc_log)->GetFunction());
+
+  target->Set(String::NewSymbol("pow"),
+       FunctionTemplate::New(Pow)->GetFunction());
+
+  target->Set(String::NewSymbol("sqrt"),
+       FunctionTemplate::New(Sqrt)->GetFunction());
+
+  target->Set(String::NewSymbol("square"),
+       FunctionTemplate::New(Square)->GetFunction());
+
+  target->Set(String::NewSymbol("floor"),
+       FunctionTemplate::New(Floor)->GetFunction());
+
+  target->Set(String::NewSymbol("ceil"),
+       FunctionTemplate::New(Ceil)->GetFunction());
+
+  target->Set(String::NewSymbol("round"),
+       FunctionTemplate::New(Round)->GetFunction());
+
+  target->Set(String::NewSymbol("sign"),
+       FunctionTemplate::New(Sign)->GetFunction());
+
+  // Scalar/Vector Valued Functions of Vectors/Matrices
+
+  target->Set(String::NewSymbol("all"),
+       FunctionTemplate::New(All)->GetFunction());
+
+  target->Set(String::NewSymbol("mean"),
+       FunctionTemplate::New(Mean)->GetFunction());
+
+  target->Set(String::NewSymbol("median"),
+       FunctionTemplate::New(Median)->GetFunction());
+
+  target->Set(String::NewSymbol("stddev"),
+       FunctionTemplate::New(Stddev)->GetFunction());
+
+  target->Set(String::NewSymbol("var"),
+       FunctionTemplate::New(Var)->GetFunction());
 
   // Vector/Matrix/Cube Valued Functions of Vectors/Matrices/Cubes
 

@@ -14,14 +14,21 @@ x = new gg.mat("2 2 1; 2 3 1; 4 2 4");
 
 // vec.print();
 
-var z = new gg.colvec(5);
+var z = new gg.Colvec(5);
 
-var num = z.at(3)
+z.randn();
 
-var diagMat = gg.diagmat(z);
+z2 = gg.exp(z)
+
+z.print();
+z2.print();
+
+x.randn()
 x.print();
+x3 = gg.sign(x);
+x3.print();
 
-diagMat.print();
+
 //y = new gg.mat("2 2 1; 2 3 1; 4 2 4");
 //z = x.subtract(y);
 //x.print();

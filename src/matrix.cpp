@@ -114,6 +114,9 @@ void matWrap::Initialize(Handle<Object> target) {
   tpl->PrototypeTemplate()->Set(String::NewSymbol("randn"),
       FunctionTemplate::New(randn)->GetFunction());
 
+  tpl->PrototypeTemplate()->Set(String::NewSymbol("set_size"),
+       FunctionTemplate::New(set_size)->GetFunction());
+
   tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_row"),
        FunctionTemplate::New(shed_row)->GetFunction());
 
@@ -433,6 +436,24 @@ Handle<Value> matWrap::randn(const Arguments& args) {
   return scope.Close(Undefined());
 }
 
+Handle<Value> matWrap::set_size(const Arguments& args){
+	HandleScope scope;
+	if (args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber()){
+
+		  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+		  arma::mat* q = w->GetWrapped();
+		  arma::mat A = *q;
+
+		  A.set_size(args[0]->NumberValue(),args[1]->NumberValue());
+		  *q = A;
+
+	} else {
+		return ThrowException(Exception::TypeError(
+			  String::New("Functions expects two numeric arguments (n_rows, n_cols).")));
+		}
+	return scope.Close(Undefined());
+}
+
 Handle<Value> matWrap::shed_row(const Arguments& args) {
   HandleScope scope;
 
@@ -494,25 +515,34 @@ Handle<Value> matWrap::shed_cols(const Arguments& args) {
 Handle<Value> matWrap::swap_rows(const Arguments& args) {
   HandleScope scope;
 
-  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
-  arma::mat* q = w->GetWrapped();
-  arma::mat A = *q;
+  if (args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber()){
+	  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+	  arma::mat* q = w->GetWrapped();
+	  arma::mat A = *q;
 
-  A.swap_rows(args[0]->NumberValue(), args[1]->NumberValue());
-  *q = A;
-  return scope.Close(Undefined());
+	  A.swap_rows(args[0]->NumberValue(), args[1]->NumberValue());
+	  *q = A;
+	  return scope.Close(Undefined());
+  } else {
+	 	  return ThrowException(Exception::TypeError(
+	 			  String::New("Function expects two numeric arguments: row1, row2.")));
+  }
 }
 
 Handle<Value> matWrap::swap_cols(const Arguments& args) {
   HandleScope scope;
+  if (args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber()){
+	  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
+	  arma::mat* q = w->GetWrapped();
+	  arma::mat A = *q;
 
-  matWrap* w = ObjectWrap::Unwrap<matWrap>(args.This());
-  arma::mat* q = w->GetWrapped();
-  arma::mat A = *q;
-
-  A.swap_cols(args[0]->NumberValue(), args[1]->NumberValue());
-  *q = A;
-  return scope.Close(Undefined());
+	  A.swap_cols(args[0]->NumberValue(), args[1]->NumberValue());
+	  *q = A;
+	  return scope.Close(Undefined());
+	  } else {
+		  return ThrowException(Exception::TypeError(
+		 	 			  String::New("Function expects two numeric arguments: col1, col2.")));
+	  }
 }
 
 // Submatrix views

@@ -7,9 +7,12 @@
 #include <vector>
 #include <algorithm>
 
+#include "colvec.h"
+
 using namespace v8;
 
 arma::mat UnwrapMatrix(Handle<Value> inputMat);
 arma::colvec UnwrapColvec(Handle<Value> inputVec);
+colvecWrap ColvecApply(Handle<Value> inputVec, Handle<Function> FUN);
 
 #endif

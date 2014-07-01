@@ -36,41 +36,44 @@ class matWrap : public node::ObjectWrap {
     static v8::Handle<v8::Value> New(const v8::Arguments& args);
 
   // Wrapped methods
-   static v8::Handle<v8::Value> ones(const v8::Arguments& args);
-   static v8::Handle<v8::Value> zeros(const v8::Arguments& args);
+   static v8::Handle<v8::Value> at(const v8::Arguments& args);
+
+   static v8::Handle<v8::Value> eye(const v8::Arguments& args);
+
    static v8::Handle<v8::Value> fill(const v8::Arguments& args);
-   static v8::Handle<v8::Value> t(const v8::Arguments& args);
-   static v8::Handle<v8::Value> n_cols(const v8::Arguments& args);
-   static v8::Handle<v8::Value> n_rows(const v8::Arguments& args);
-   static v8::Handle<v8::Value> n_elem(const v8::Arguments& args);
-   static v8::Handle<v8::Value> print(const v8::Arguments& args);
-   static v8::Handle<v8::Value> reset(const v8::Arguments& args);
-   
+
+   static v8::Handle<v8::Value> i(const v8::Arguments& args);
    static v8::Handle<v8::Value> is_empty(const v8::Arguments& args);
    static v8::Handle<v8::Value> is_finite(const v8::Arguments& args);   
    static v8::Handle<v8::Value> is_square(const v8::Arguments& args);
    static v8::Handle<v8::Value> is_vec(const v8::Arguments& args);
    static v8::Handle<v8::Value> is_colvec(const v8::Arguments& args);
    static v8::Handle<v8::Value> is_rowvec(const v8::Arguments& args);
-
    
-   static v8::Handle<v8::Value> eye(const v8::Arguments& args);
-    
-   static v8::Handle<v8::Value> resize(const v8::Arguments& args);
+   static v8::Handle<v8::Value> n_cols(const v8::Arguments& args);
+   static v8::Handle<v8::Value> n_rows(const v8::Arguments& args);
+   static v8::Handle<v8::Value> n_elem(const v8::Arguments& args);
    
-   static v8::Handle<v8::Value> i(const v8::Arguments& args);
+   static v8::Handle<v8::Value> ones(const v8::Arguments& args);
    
-   static v8::Handle<v8::Value> at(const v8::Arguments& args);
+   static v8::Handle<v8::Value> print(const v8::Arguments& args);
    
    static v8::Handle<v8::Value> randu(const v8::Arguments& args);
    static v8::Handle<v8::Value> randn(const v8::Arguments& args);
+   static v8::Handle<v8::Value> reset(const v8::Arguments& args);
+   static v8::Handle<v8::Value> resize(const v8::Arguments& args);
 
+   static v8::Handle<v8::Value> set_size(const v8::Arguments& args);
    static v8::Handle<v8::Value> shed_row(const v8::Arguments& args);
    static v8::Handle<v8::Value> shed_rows(const v8::Arguments& args);
    static v8::Handle<v8::Value> shed_col(const v8::Arguments& args);
    static v8::Handle<v8::Value> shed_cols(const v8::Arguments& args);
    static v8::Handle<v8::Value> swap_rows(const v8::Arguments& args);
    static v8::Handle<v8::Value> swap_cols(const v8::Arguments& args);
+
+   static v8::Handle<v8::Value> t(const v8::Arguments& args);
+
+   static v8::Handle<v8::Value> zeros(const v8::Arguments& args);
 
    // Submatrix Views
 
