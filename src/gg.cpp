@@ -7,6 +7,7 @@
 #include "matrix.h"
 #include "colvec.h"
 #include "rowvec.h"
+#include "cube.h"
 #include "helper.h"
 
 using namespace v8;
@@ -778,6 +779,14 @@ void Initialize(Handle<Object> target) {
   matWrap::Initialize(target);
   colvecWrap::Initialize(target);
   rowvecWrap::Initialize(target);
+
+  // initialize Cube classes
+  cubeWrap<double>::Initialize(target);
+  cubeWrap<float>::Initialize(target);
+  cubeWrap<arma::cx_double>::Initialize(target);
+  cubeWrap<arma::cx_float>::Initialize(target);
+  cubeWrap<arma::uword>::Initialize(target);
+  cubeWrap<arma::sword>::Initialize(target);
 
   // module functions
   target->Set(String::NewSymbol("accu"),

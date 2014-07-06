@@ -3,6 +3,8 @@ console.log('hier kommt unser neues modul')
 var gg = require('./build/Release/armadillo');
 var util = require('util');
 
+
+
 x = new gg.mat("2 2 1; 2 3 2; 4 2 4");
 y = new gg.mat("1 1 2; 3 2 3; 2 4 2")
 //x.print();
@@ -17,6 +19,10 @@ y = new gg.mat("1 1 2; 3 2 3; 2 4 2")
 
 var z = new gg.Colvec(5);
 var r = new gg.Rowvec(3);
+
+var c = new gg.Cube();
+
+var cf = new gg.FCube();
 
 x.print();
 

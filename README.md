@@ -54,6 +54,8 @@ var arma = require('armadillo');
 
 ## Matrices
 
+### Constructors
+
 ### Operators
 
 #### `add`
@@ -78,3 +80,28 @@ var arma = require('armadillo');
 
 ## Column Vectors
 
+### Constructors
+
+## Row Vectors
+
+### Constructors
+
+### Methods
+
+### Properties
+
+## Cube
+
+### Constructors
+
+### Methods
+
+### Properties
+
+## Field
+
+### Constructors
+
+### Methods
+
+### Properties
