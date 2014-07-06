@@ -26,9 +26,9 @@ arma::Col<double> UnwrapColvec(Handle<Value> inputVec){
 	return *r;
 }
 
-arma::rowvec UnwrapRowvec(Handle<Value> inputVec){
+arma::Row<double> UnwrapRowvec(Handle<Value> inputVec){
 	Handle<Object> obj = Handle<Object>::Cast(inputVec);
-	rowvecWrap* u = node::ObjectWrap::Unwrap<rowvecWrap>(obj);
+	rowvecWrap<double>* u = node::ObjectWrap::Unwrap<rowvecWrap<double> >(obj);
 	arma::rowvec* r = u->GetWrapped();
 	return *r;
 }

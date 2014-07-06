@@ -9,17 +9,19 @@
 
 using namespace v8;
 
+template<typename T>
 class rowvecWrap : public node::ObjectWrap {
 
 public:
     static void Initialize(v8::Handle<v8::Object> target);
-    arma::rowvec* GetWrapped() const { return q_; };
-    void SetWrapped(arma::rowvec q) {
+    arma::Row<T>* GetWrapped() const { return q_; };
+    void SetWrapped(arma::Row<T> q) {
       if (q_) delete q_;
-      q_ = new arma::rowvec(q);
+      q_ = new arma::Row<T>(q);
       };
 
-    static v8::Handle<v8::Value> NewInstance(arma::rowvec q);
+    static void registerMethods(Local<FunctionTemplate> tpl);
+    static v8::Handle<v8::Value> NewInstance(arma::Row<T> q);
 
     // check whether something is an instance of the rowvec class
      static bool HasInstance(v8::Handle<v8::Value> value) {
@@ -65,7 +67,9 @@ public:
     static v8::Handle<v8::Value> GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info);
 
 	// Wrapped object
-    arma::rowvec* q_;
+    arma::Row<T>* q_;
 };
+
+#include "rowvec.cpp"
 
 #endif

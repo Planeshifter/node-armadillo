@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "colvec.h"
+#include "rowvec.h"
 
 using namespace v8;
 
@@ -15,6 +16,6 @@ arma::mat UnwrapMatrix(Handle<Value> inputMat);
 
 arma::Col<double> UnwrapColvec(Handle<Value> inputVec);
 
-arma::rowvec UnwrapRowvec(Handle<Value> inputVec);
+arma::Row<double> UnwrapRowvec(Handle<Value> inputVec);
 
 #endif

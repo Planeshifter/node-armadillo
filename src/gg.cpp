@@ -458,7 +458,7 @@ Handle<Value> Min(const Arguments& args){
 			  return scope.Close(colvecWrap<double>::NewInstance(ret));
 			} else {
 			  arma::rowvec ret = arma::min(X);
-			  return scope.Close(rowvecWrap::NewInstance(ret));
+			  return scope.Close(rowvecWrap<double>::NewInstance(ret));
 			}
 		}
 		return ThrowException(Exception::TypeError(
@@ -488,7 +488,7 @@ Handle<Value> Max(const Arguments& args){
 			  return scope.Close(colvecWrap<double>::NewInstance(ret));
 			} else {
 			  arma::rowvec ret = arma::max(X);
-			  return scope.Close(rowvecWrap::NewInstance(ret));
+			  return scope.Close(rowvecWrap<double>::NewInstance(ret));
 			}
 		}
 
@@ -511,7 +511,7 @@ Handle<Value> Prod(const Arguments& args){
 			  return scope.Close(colvecWrap<double>::NewInstance(ret));
 			} else {
 			  arma::rowvec ret = arma::prod(X);
-			  return scope.Close(rowvecWrap::NewInstance(ret));
+			  return scope.Close(rowvecWrap<double>::NewInstance(ret));
 			}
 		}
 		return ThrowException(Exception::TypeError(
@@ -533,7 +533,7 @@ Handle<Value> Sum(const Arguments& args){
 		  return scope.Close(colvecWrap<double>::NewInstance(ret));
 		} else {
 		  arma::rowvec ret = arma::sum(X);
-		  return scope.Close(rowvecWrap::NewInstance(ret));
+		  return scope.Close(rowvecWrap<double>::NewInstance(ret));
 		}
 	}
 
@@ -778,7 +778,11 @@ Handle<Value> Qr_econ(const Arguments& args){
 void Initialize(Handle<Object> target) {
   // initialize armadillo classes
   matWrap::Initialize(target);
-  rowvecWrap::Initialize(target);
+
+
+  // initialize Rowvec classes
+  rowvecWrap<double>::Initialize(target);
+  rowvecWrap<float>::Initialize(target);
 
   // initialize Colvec classes
   colvecWrap<double>::Initialize(target);

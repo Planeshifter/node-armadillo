@@ -18,6 +18,8 @@ y = new gg.mat("1 1 2; 3 2 3; 2 4 2")
 // vec.print();
 
 var z = new gg.Colvec(5);
+var h = new gg.FColvec(3);
+h.print();
 var r = new gg.Rowvec(3);
 
 var c = new gg.Cube();

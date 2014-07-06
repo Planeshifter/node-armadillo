@@ -4,94 +4,121 @@
 #include <vector>
 #include <algorithm>
 
-#include "rowvec.h"
 #include "helper.h"
 
 using namespace v8;
 using namespace std;
 
-Persistent<FunctionTemplate> rowvecWrap::constructor;
+template<typename T>
+Persistent<FunctionTemplate> rowvecWrap<T>::constructor;
 
-rowvecWrap::rowvecWrap(const Arguments& args) : q_(NULL) {
+template<typename T>
+rowvecWrap<T>::rowvecWrap(const Arguments& args) : q_(NULL) {
 
 	if (args.Length() == 0) {
 	    // rowvec ( )
-	    q_ = new arma::rowvec();
+	    q_ = new arma::Row<T>();
 	  } else if (args.Length() == 1 && args[0]->IsNumber()){
-		q_ = new arma::rowvec(args[0]->NumberValue());
+		q_ = new arma::Row<T>(args[0]->NumberValue());
 	  }
 }
 
-rowvecWrap::~rowvecWrap() {
+template<typename T>
+rowvecWrap<T>::~rowvecWrap() {
   delete q_;
 }
 
-void rowvecWrap::Initialize(Handle<Object> target) {
-   // Prepare constructor template
-  Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
-  tpl->SetClassName(String::NewSymbol("Rowvec"));
-  tpl->InstanceTemplate()->SetInternalFieldCount(1);
+template<typename T>
+void rowvecWrap<T>::Initialize(Handle<Object> target) {
 
-  // Prototype
+};
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("at"),
-       FunctionTemplate::New(at)->GetFunction());
+template<> inline void rowvecWrap<double>::Initialize(Handle<Object> target) {
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("fill"),
-       FunctionTemplate::New(fill)->GetFunction());
+	 // Prepare constructor template
+	  Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
+	  tpl->SetClassName(String::NewSymbol("Rowvec"));
+	  tpl->InstanceTemplate()->SetInternalFieldCount(1);
+	  registerMethods(tpl);
+	  constructor = Persistent<FunctionTemplate>::New(tpl);
+	  target->Set(String::NewSymbol("Rowvec"), constructor->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_empty"),
-      FunctionTemplate::New(is_empty)->GetFunction());
+};
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_finite"),
-      FunctionTemplate::New(is_finite)->GetFunction());
+template<> inline void rowvecWrap<float>::Initialize(Handle<Object> target) {
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("print"),
-       FunctionTemplate::New(print)->GetFunction());
+	 // Prepare constructor template
+	  Local<FunctionTemplate> tpl = FunctionTemplate::New(New);
+	  tpl->SetClassName(String::NewSymbol("FRowvec"));
+	  tpl->InstanceTemplate()->SetInternalFieldCount(1);
+	  registerMethods(tpl);
+	  constructor = Persistent<FunctionTemplate>::New(tpl);
+	  target->Set(String::NewSymbol("FRowvec"), constructor->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("randu"),
-          FunctionTemplate::New(randu)->GetFunction());
+};
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("randn"),
-          FunctionTemplate::New(randn)->GetFunction());
+template<typename T>
+void rowvecWrap<T>::registerMethods(Local<FunctionTemplate> tpl){
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("reset"),
-        FunctionTemplate::New(reset)->GetFunction());
+	  // Prototype
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("resize"),
-        FunctionTemplate::New(resize)->GetFunction());
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("at"),
+	       FunctionTemplate::New(at)->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("set_size"),
-          FunctionTemplate::New(set_size)->GetFunction());
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("fill"),
+	       FunctionTemplate::New(fill)->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_col"),
-          FunctionTemplate::New(shed_col)->GetFunction());
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_empty"),
+	      FunctionTemplate::New(is_empty)->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_cols"),
-          FunctionTemplate::New(shed_cols)->GetFunction());
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("is_finite"),
+	      FunctionTemplate::New(is_finite)->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("swap_rows"),
-          FunctionTemplate::New(swap_rows)->GetFunction());
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("print"),
+	       FunctionTemplate::New(print)->GetFunction());
 
-  tpl->PrototypeTemplate()->Set(String::NewSymbol("swap_cols"),
-          FunctionTemplate::New(swap_cols)->GetFunction());
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("randu"),
+	          FunctionTemplate::New(randu)->GetFunction());
 
-  // Object properties
-  tpl->InstanceTemplate()->SetAccessor(String::New("n_rows"), GetNrow);
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("randn"),
+	          FunctionTemplate::New(randn)->GetFunction());
 
-  tpl->InstanceTemplate()->SetAccessor(String::New("n_cols"), GetNcol);
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("reset"),
+	        FunctionTemplate::New(reset)->GetFunction());
 
-  tpl->InstanceTemplate()->SetAccessor(String::New("n_elem"), GetNelem);
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("resize"),
+	        FunctionTemplate::New(resize)->GetFunction());
 
-  constructor = Persistent<FunctionTemplate>::New(tpl);
-  target->Set(String::NewSymbol("Rowvec"), constructor->GetFunction());
-}
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("set_size"),
+	          FunctionTemplate::New(set_size)->GetFunction());
 
-Handle<Value> rowvecWrap::New(const Arguments& args) {
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_col"),
+	          FunctionTemplate::New(shed_col)->GetFunction());
+
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("shed_cols"),
+	          FunctionTemplate::New(shed_cols)->GetFunction());
+
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("swap_rows"),
+	          FunctionTemplate::New(swap_rows)->GetFunction());
+
+	  tpl->PrototypeTemplate()->Set(String::NewSymbol("swap_cols"),
+	          FunctionTemplate::New(swap_cols)->GetFunction());
+
+	  // Object properties
+	  tpl->InstanceTemplate()->SetAccessor(String::New("n_rows"), GetNrow);
+
+	  tpl->InstanceTemplate()->SetAccessor(String::New("n_cols"), GetNcol);
+
+	  tpl->InstanceTemplate()->SetAccessor(String::New("n_elem"), GetNelem);
+
+};
+
+template<typename T>
+Handle<Value> rowvecWrap<T>::New(const Arguments& args) {
   HandleScope scope;
 
   if (args.IsConstructCall()) {
-  rowvecWrap* w = new rowvecWrap(args);
+  rowvecWrap<T>* w = new rowvecWrap(args);
   w->Wrap(args.This());
 
   return args.This();
@@ -102,22 +129,24 @@ Handle<Value> rowvecWrap::New(const Arguments& args) {
   }
 }
 
-Handle<Value> rowvecWrap::NewInstance(arma::rowvec q) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::NewInstance(arma::Row<T> q) {
   HandleScope scope;
 
   Local<Object> instance = constructor->GetFunction()->NewInstance(0, NULL);
-  rowvecWrap* w = node::ObjectWrap::Unwrap<rowvecWrap>(instance);
+  rowvecWrap<T>* w = node::ObjectWrap::Unwrap<rowvecWrap<T> >(instance);
   w->SetWrapped(q);
 
   return scope.Close(instance);
 }
 
-Handle<Value> rowvecWrap::at(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::at(const Arguments& args) {
   HandleScope scope;
   Local<Value> ret;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
 
   if(args.Length() == 1 && args[0]->IsNumber()){
 	  ret = Number::New(q->at(args[0]->NumberValue()));
@@ -126,48 +155,52 @@ Handle<Value> rowvecWrap::at(const Arguments& args) {
   return scope.Close(ret);
 }
 
-Handle<Value> rowvecWrap::fill(const Arguments& args){
+template<typename T>
+Handle<Value> rowvecWrap<T>::fill(const Arguments& args){
 	HandleScope scope;
-	rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-	arma::rowvec* q = w->GetWrapped();
+	rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+	arma::Row<T>* q = w->GetWrapped();
 	*q = q->fill(args[0]->NumberValue());
 	return scope.Close(Undefined());
 
 }
 
-Handle<Value> rowvecWrap::is_empty(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::is_empty(const Arguments& args) {
   HandleScope scope;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
 
   return scope.Close(Boolean::New(q->is_empty()));
 }
 
-Handle<Value> rowvecWrap::is_finite(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::is_finite(const Arguments& args) {
   HandleScope scope;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
 
   return scope.Close(Boolean::New(q->is_finite()));
 }
 
-
-Handle<Value> rowvecWrap::print(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::print(const Arguments& args) {
   HandleScope scope;
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
   q->print();
   return scope.Close(Undefined());
 }
 
-Handle<Value> rowvecWrap::randu(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::randu(const Arguments& args) {
   HandleScope scope;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
-  arma::rowvec A = *q;
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
+  arma::Row<T> A = *q;
 
   if (args.Length() == 0)
   	  {
@@ -181,13 +214,13 @@ Handle<Value> rowvecWrap::randu(const Arguments& args) {
   return scope.Close(Undefined());
 }
 
-
-Handle<Value> rowvecWrap::randn(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::randn(const Arguments& args) {
   HandleScope scope;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
-  arma::rowvec A = *q;
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
+  arma::Row<T> A = *q;
 
   if (args.Length() == 0)
   	  {
@@ -201,22 +234,24 @@ Handle<Value> rowvecWrap::randn(const Arguments& args) {
   return scope.Close(Undefined());
 }
 
-Handle<Value> rowvecWrap::reset(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::reset(const Arguments& args) {
   HandleScope scope;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
   q->reset();
 
   return scope.Close(Undefined());
 }
 
-Handle<Value> rowvecWrap::resize(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::resize(const Arguments& args) {
   HandleScope scope;
 
   if (args[0]->IsNumber()){
-	  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-	  arma::rowvec* q = w->GetWrapped();
+	  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+	  arma::Row<T>* q = w->GetWrapped();
 	  q->resize(args[0]->NumberValue());
 
 	  return scope.Close(Undefined());
@@ -227,13 +262,14 @@ Handle<Value> rowvecWrap::resize(const Arguments& args) {
 
 }
 
-Handle<Value> rowvecWrap::set_size(const Arguments& args){
+template<typename T>
+Handle<Value> rowvecWrap<T>::set_size(const Arguments& args){
 	HandleScope scope;
 	if (args.Length() == 1 && args[0]->IsNumber()){
 
-		rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-		arma::rowvec* q = w->GetWrapped();
-		arma::rowvec A = *q;
+		rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+		arma::Row<T>* q = w->GetWrapped();
+		arma::Row<T> A = *q;
 
 		A.set_size(args[0]->NumberValue());
 		*q = A;
@@ -245,38 +281,40 @@ Handle<Value> rowvecWrap::set_size(const Arguments& args){
 	return scope.Close(Undefined());
 }
 
-
-Handle<Value> rowvecWrap::shed_col(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::shed_col(const Arguments& args) {
   HandleScope scope;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
-  arma::rowvec A = *q;
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
+  arma::Row<T> A = *q;
 
   A.shed_col(args[0]->NumberValue());
   *q = A;
   return scope.Close(Undefined());
 }
 
-Handle<Value> rowvecWrap::shed_cols(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::shed_cols(const Arguments& args) {
   HandleScope scope;
 
-  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-  arma::rowvec* q = w->GetWrapped();
-  arma::rowvec A = *q;
+  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+  arma::Row<T>* q = w->GetWrapped();
+  arma::Row<T> A = *q;
 
   A.shed_cols(args[0]->NumberValue(), args[1]->NumberValue());
   *q = A;
   return scope.Close(Undefined());
 }
 
-Handle<Value> rowvecWrap::swap_rows(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::swap_rows(const Arguments& args) {
   HandleScope scope;
 
   if (args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber()){
-	  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-	  arma::rowvec* q = w->GetWrapped();
-	  arma::rowvec A = *q;
+	  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+	  arma::Row<T>* q = w->GetWrapped();
+	  arma::Row<T> A = *q;
 
 	  A.swap_rows(args[0]->NumberValue(), args[1]->NumberValue());
 	  *q = A;
@@ -287,12 +325,13 @@ Handle<Value> rowvecWrap::swap_rows(const Arguments& args) {
   }
 }
 
-Handle<Value> rowvecWrap::swap_cols(const Arguments& args) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::swap_cols(const Arguments& args) {
   HandleScope scope;
   if (args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber()){
-	  rowvecWrap* w = ObjectWrap::Unwrap<rowvecWrap>(args.This());
-	  arma::rowvec* q = w->GetWrapped();
-	  arma::rowvec A = *q;
+	  rowvecWrap<T>* w = ObjectWrap::Unwrap<rowvecWrap<T> >(args.This());
+	  arma::Row<T>* q = w->GetWrapped();
+	  arma::Row<T> A = *q;
 
 	  A.swap_cols(args[0]->NumberValue(), args[1]->NumberValue());
 	  *q = A;
@@ -305,23 +344,26 @@ Handle<Value> rowvecWrap::swap_cols(const Arguments& args) {
 
 // Object properties
 
- Handle<Value> rowvecWrap::GetNrow(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::GetNrow(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
   HandleScope scope;
-  rowvecWrap* w = node::ObjectWrap::Unwrap<rowvecWrap>(info.Holder());
-  arma::rowvec* q = w->GetWrapped();
+  rowvecWrap<T>* w = node::ObjectWrap::Unwrap<rowvecWrap<T> >(info.Holder());
+  arma::Row<T>* q = w->GetWrapped();
   return scope.Close(Number::New(q->n_rows));
 }
 
- Handle<Value> rowvecWrap::GetNcol(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::GetNcol(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
    HandleScope scope;
-   rowvecWrap* w = node::ObjectWrap::Unwrap<rowvecWrap>(info.Holder());
-   arma::rowvec* q = w->GetWrapped();
+   rowvecWrap<T>* w = node::ObjectWrap::Unwrap<rowvecWrap<T> >(info.Holder());
+   arma::Row<T>* q = w->GetWrapped();
    return scope.Close(Number::New(q->n_cols));
  }
 
- Handle<Value> rowvecWrap::GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
+template<typename T>
+Handle<Value> rowvecWrap<T>::GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info) {
    HandleScope scope;
-   rowvecWrap* w = node::ObjectWrap::Unwrap<rowvecWrap>(info.Holder());
-   arma::rowvec* q = w->GetWrapped();
+   rowvecWrap<T>* w = node::ObjectWrap::Unwrap<rowvecWrap<T> >(info.Holder());
+   arma::Row<T>* q = w->GetWrapped();
    return scope.Close(Number::New(q->n_elem));
  }
