@@ -90,15 +90,17 @@ var arma = require('armadillo');
 
 ### Properties
 
-## Cube
+## Cubes
 
 ### Constructors
+
+The Armadillo library provides 
 
 ### Methods
 
 ### Properties
 
-## Field
+## Fields
 
 ### Constructors
 

@@ -8,6 +8,7 @@
 #include "colvec.h"
 #include "rowvec.h"
 #include "cube.h"
+#include "field.h"
 #include "helper.h"
 
 using namespace v8;
