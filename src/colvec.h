@@ -9,17 +9,19 @@
 
 using namespace v8;
 
+template <typename T>
 class colvecWrap : public node::ObjectWrap {
 
 public:
     static void Initialize(v8::Handle<v8::Object> target);
-    arma::colvec* GetWrapped() const { return q_; };
-    void SetWrapped(arma::colvec q) {
+    arma::Col<T>* GetWrapped() const { return q_; };
+    void SetWrapped(arma::Col<T> q) {
       if (q_) delete q_;
-      q_ = new arma::colvec(q);
+      q_ = new arma::Col<T>(q);
       };
 
-    static v8::Handle<v8::Value> NewInstance(arma::colvec q);
+    static void registerMethods(Local<FunctionTemplate> tpl);
+    static v8::Handle<v8::Value> NewInstance(arma::Col<T> q);
 
     // check whether something is an instance of the colvec class
      static bool HasInstance(v8::Handle<v8::Value> value) {
@@ -65,7 +67,9 @@ public:
     static v8::Handle<v8::Value> GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info);
 
 	// Wrapped object
-    arma::colvec* q_;
+    arma::Col<T>* q_;
 };
+
+#include "colvec.cpp"
 
 #endif

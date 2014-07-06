@@ -12,7 +12,9 @@
 using namespace v8;
 
 arma::mat UnwrapMatrix(Handle<Value> inputMat);
-arma::colvec UnwrapColvec(Handle<Value> inputVec);
+
+arma::Col<double> UnwrapColvec(Handle<Value> inputVec);
+
 arma::rowvec UnwrapRowvec(Handle<Value> inputVec);
 
 #endif

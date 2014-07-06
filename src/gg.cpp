@@ -19,10 +19,10 @@ using namespace std;
 Handle<Value> Exp(const Arguments& args){
 	HandleScope scope;
 	if (args[0]->IsObject()){
-		if(colvecWrap::HasInstance(args[0]) == true) {
+		if(colvecWrap<double>::HasInstance(args[0]) == true) {
 			arma::colvec A = UnwrapColvec(args[0]);
 			arma::colvec B = arma::exp(A);
-			return scope.Close(colvecWrap::NewInstance(B));
+			return scope.Close(colvecWrap<double>::NewInstance(B));
 		} else if (matWrap::HasInstance(args[0]) == true){
 			arma::mat A = UnwrapMatrix(args[0]);
 			arma::mat B = arma::exp(A);
@@ -37,10 +37,10 @@ Handle<Value> Exp(const Arguments& args){
 Handle<Value> Exp2(const Arguments& args){
 	HandleScope scope;
 		if (args[0]->IsObject()){
-			if(colvecWrap::HasInstance(args[0]) == true) {
+			if(colvecWrap<double>::HasInstance(args[0]) == true) {
 				arma::colvec A = UnwrapColvec(args[0]);
 				arma::colvec B = arma::exp2(A);
-				return scope.Close(colvecWrap::NewInstance(B));
+				return scope.Close(colvecWrap<double>::NewInstance(B));
 			} else if (matWrap::HasInstance(args[0]) == true){
 				arma::mat A = UnwrapMatrix(args[0]);
 				arma::mat B = arma::exp2(A);
@@ -55,10 +55,10 @@ Handle<Value> Exp2(const Arguments& args){
 Handle<Value> Exp10(const Arguments& args){
 	HandleScope scope;
 		if (args[0]->IsObject()){
-			if(colvecWrap::HasInstance(args[0]) == true) {
+			if(colvecWrap<double>::HasInstance(args[0]) == true) {
 				arma::colvec A = UnwrapColvec(args[0]);
 				arma::colvec B = arma::exp10(A);
-				return scope.Close(colvecWrap::NewInstance(B));
+				return scope.Close(colvecWrap<double>::NewInstance(B));
 			} else if (matWrap::HasInstance(args[0]) == true){
 				arma::mat A = UnwrapMatrix(args[0]);
 				arma::mat B = arma::exp10(A);
@@ -73,10 +73,10 @@ Handle<Value> Exp10(const Arguments& args){
 Handle<Value> Trunc_exp(const Arguments& args){
 	HandleScope scope;
 		if (args[0]->IsObject()){
-			if(colvecWrap::HasInstance(args[0]) == true) {
+			if(colvecWrap<double>::HasInstance(args[0]) == true) {
 				arma::colvec A = UnwrapColvec(args[0]);
 				arma::colvec B = arma::trunc_exp(A);
-				return scope.Close(colvecWrap::NewInstance(B));
+				return scope.Close(colvecWrap<double>::NewInstance(B));
 			} else if (matWrap::HasInstance(args[0]) == true){
 				arma::mat A = UnwrapMatrix(args[0]);
 				arma::mat B = arma::trunc_exp(A);
@@ -91,10 +91,10 @@ Handle<Value> Trunc_exp(const Arguments& args){
 Handle<Value> Log(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::log(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::log(A);
@@ -109,10 +109,10 @@ Handle<Value> Log(const Arguments& args){
 Handle<Value> Log2(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::log2(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::log2(A);
@@ -127,10 +127,10 @@ Handle<Value> Log2(const Arguments& args){
 Handle<Value> Log10(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::log10(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::log10(A);
@@ -145,10 +145,10 @@ Handle<Value> Log10(const Arguments& args){
 Handle<Value> Trunc_log(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::trunc_log(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::trunc_log(A);
@@ -163,10 +163,10 @@ Handle<Value> Trunc_log(const Arguments& args){
 Handle<Value> Pow(const Arguments& args){
 	HandleScope scope;
 	if (args[0]->IsObject() && args[1]->IsNumber()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::pow(A, args[1]->NumberValue());
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::pow(A, args[1]->NumberValue());
@@ -180,10 +180,10 @@ Handle<Value> Pow(const Arguments& args){
 Handle<Value> Sqrt(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::sqrt(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::sqrt(A);
@@ -198,10 +198,10 @@ Handle<Value> Sqrt(const Arguments& args){
 Handle<Value> Square(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::square(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::square(A);
@@ -216,10 +216,10 @@ Handle<Value> Square(const Arguments& args){
 Handle<Value> Floor(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::floor(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::floor(A);
@@ -234,10 +234,10 @@ Handle<Value> Floor(const Arguments& args){
 Handle<Value> Ceil(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::ceil(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::ceil(A);
@@ -252,10 +252,10 @@ Handle<Value> Ceil(const Arguments& args){
 Handle<Value> Round(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::round(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::round(A);
@@ -270,10 +270,10 @@ Handle<Value> Round(const Arguments& args){
 Handle<Value> Sign(const Arguments& args){
 	HandleScope scope;
 			if (args[0]->IsObject()){
-				if(colvecWrap::HasInstance(args[0]) == true) {
+				if(colvecWrap<double>::HasInstance(args[0]) == true) {
 					arma::colvec A = UnwrapColvec(args[0]);
 					arma::colvec B = arma::sign(A);
-					return scope.Close(colvecWrap::NewInstance(B));
+					return scope.Close(colvecWrap<double>::NewInstance(B));
 				} else if (matWrap::HasInstance(args[0]) == true){
 					arma::mat A = UnwrapMatrix(args[0]);
 					arma::mat B = arma::sign(A);
@@ -341,14 +341,14 @@ Handle<Value> Dot(const Arguments& args){
 					double ret = arma::dot(A,B);
 					return scope.Close(Number::New(ret));
 
-					} else if (colvecWrap::HasInstance(args[1]) == true){
+					} else if (colvecWrap<double>::HasInstance(args[1]) == true){
 
 						arma::colvec B = UnwrapColvec(args[1]);
 						double ret = arma::dot(A,B);
 						return scope.Close(Number::New(ret));
 					}
 
-		} else if (colvecWrap::HasInstance(args[0]) == true){
+		} else if (colvecWrap<double>::HasInstance(args[0]) == true){
 			arma::colvec A = UnwrapColvec(args[0]);
 
 			if(matWrap::HasInstance(args[1]) == true){
@@ -357,7 +357,7 @@ Handle<Value> Dot(const Arguments& args){
 					double ret = arma::dot(A,B);
 					return scope.Close(Number::New(ret));
 
-					} else if (colvecWrap::HasInstance(args[1]) == true){
+					} else if (colvecWrap<double>::HasInstance(args[1]) == true){
 
 						arma::colvec B = UnwrapColvec(args[1]);
 						double ret = arma::dot(A,B);
@@ -405,7 +405,7 @@ Handle<Value> Trace(const Arguments& args) {
 
 Handle<Value> All(const Arguments& args){
 	HandleScope scope;
-	if(colvecWrap::HasInstance(args[0]) == true) {
+	if(colvecWrap<double>::HasInstance(args[0]) == true) {
 		arma::colvec X = UnwrapColvec(args[0]);
 		bool status = arma::all(X);
 		return scope.Close(Boolean::New(status));
@@ -432,12 +432,12 @@ Handle<Value> Diagvec(const Arguments& args){
 		ret = arma::diagvec(X);
 	}
 
-	return scope.Close(colvecWrap::NewInstance(ret));
+	return scope.Close(colvecWrap<double>::NewInstance(ret));
 }
 
 Handle<Value> Min(const Arguments& args){
 	HandleScope scope;
-		if(colvecWrap::HasInstance(args[0]) == true) {
+		if(colvecWrap<double>::HasInstance(args[0]) == true) {
 				double ret;
 				arma::colvec X = UnwrapColvec(args[0]);
 				ret = arma::min(X);
@@ -455,7 +455,7 @@ Handle<Value> Min(const Arguments& args){
 			arma::mat X = UnwrapMatrix(args[0]);
 			if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
 			  arma::colvec ret = arma::min(X, args[1]->NumberValue());
-			  return scope.Close(colvecWrap::NewInstance(ret));
+			  return scope.Close(colvecWrap<double>::NewInstance(ret));
 			} else {
 			  arma::rowvec ret = arma::min(X);
 			  return scope.Close(rowvecWrap::NewInstance(ret));
@@ -467,7 +467,7 @@ Handle<Value> Min(const Arguments& args){
 
 Handle<Value> Max(const Arguments& args){
 	HandleScope scope;
-		if(colvecWrap::HasInstance(args[0]) == true) {
+		if(colvecWrap<double>::HasInstance(args[0]) == true) {
 				double ret;
 				arma::colvec X = UnwrapColvec(args[0]);
 				ret = arma::max(X);
@@ -485,7 +485,7 @@ Handle<Value> Max(const Arguments& args){
 			arma::mat X = UnwrapMatrix(args[0]);
 			if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
 			  arma::colvec ret = arma::max(X, args[1]->NumberValue());
-			  return scope.Close(colvecWrap::NewInstance(ret));
+			  return scope.Close(colvecWrap<double>::NewInstance(ret));
 			} else {
 			  arma::rowvec ret = arma::max(X);
 			  return scope.Close(rowvecWrap::NewInstance(ret));
@@ -498,7 +498,7 @@ Handle<Value> Max(const Arguments& args){
 
 Handle<Value> Prod(const Arguments& args){
 	HandleScope scope;
-	if(colvecWrap::HasInstance(args[0]) == true) {
+	if(colvecWrap<double>::HasInstance(args[0]) == true) {
 			double ret;
 			arma::colvec X = UnwrapColvec(args[0]);
 			ret = arma::prod(X);
@@ -508,7 +508,7 @@ Handle<Value> Prod(const Arguments& args){
 			arma::mat X = UnwrapMatrix(args[0]);
 			if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
 			  arma::colvec ret = arma::prod(X, args[1]->NumberValue());
-			  return scope.Close(colvecWrap::NewInstance(ret));
+			  return scope.Close(colvecWrap<double>::NewInstance(ret));
 			} else {
 			  arma::rowvec ret = arma::prod(X);
 			  return scope.Close(rowvecWrap::NewInstance(ret));
@@ -520,7 +520,7 @@ Handle<Value> Prod(const Arguments& args){
 
 Handle<Value> Sum(const Arguments& args){
 	HandleScope scope;
-	if(colvecWrap::HasInstance(args[0]) == true) {
+	if(colvecWrap<double>::HasInstance(args[0]) == true) {
 		double ret;
 		arma::colvec X = UnwrapColvec(args[0]);
 		ret = arma::sum(X);
@@ -530,7 +530,7 @@ Handle<Value> Sum(const Arguments& args){
 		arma::mat X = UnwrapMatrix(args[0]);
 		if(args[1]->IsNumber() && args[1]->NumberValue() == 1){
 		  arma::colvec ret = arma::sum(X,args[1]->NumberValue());
-		  return scope.Close(colvecWrap::NewInstance(ret));
+		  return scope.Close(colvecWrap<double>::NewInstance(ret));
 		} else {
 		  arma::rowvec ret = arma::sum(X);
 		  return scope.Close(rowvecWrap::NewInstance(ret));
@@ -543,7 +543,7 @@ Handle<Value> Sum(const Arguments& args){
 
 Handle<Value> Mean(const Arguments& args){
 	HandleScope scope;
-	if(colvecWrap::HasInstance(args[0]) == true) {
+	if(colvecWrap<double>::HasInstance(args[0]) == true) {
 		arma::colvec X = UnwrapColvec(args[0]);
 		return scope.Close(Number::New(arma::mean(X)));
 	} else if(matWrap::HasInstance(args[0]) == true){
@@ -557,7 +557,7 @@ Handle<Value> Mean(const Arguments& args){
 
 Handle<Value> Median(const Arguments& args){
 	HandleScope scope;
-	if(colvecWrap::HasInstance(args[0]) == true) {
+	if(colvecWrap<double>::HasInstance(args[0]) == true) {
 		arma::colvec X = UnwrapColvec(args[0]);
 		return scope.Close(Number::New(arma::median(X)));
 	} else if(matWrap::HasInstance(args[0]) == true){
@@ -571,7 +571,7 @@ Handle<Value> Median(const Arguments& args){
 
 Handle<Value> Stddev(const Arguments& args){
 	HandleScope scope;
-	if(colvecWrap::HasInstance(args[0]) == true) {
+	if(colvecWrap<double>::HasInstance(args[0]) == true) {
 		arma::colvec X = UnwrapColvec(args[0]);
 		return scope.Close(Number::New(arma::stddev(X)));
 	} else if(matWrap::HasInstance(args[0]) == true){
@@ -585,7 +585,7 @@ Handle<Value> Stddev(const Arguments& args){
 
 Handle<Value> Var(const Arguments& args){
 	HandleScope scope;
-	if(colvecWrap::HasInstance(args[0]) == true) {
+	if(colvecWrap<double>::HasInstance(args[0]) == true) {
 		arma::colvec X = UnwrapColvec(args[0]);
 		return scope.Close(Number::New(arma::var(X)));
 	} else if(matWrap::HasInstance(args[0]) == true){
@@ -608,7 +608,7 @@ Handle<Value> Diagmat(const Arguments& args){
 	arma::mat X = UnwrapMatrix(args[0]);
 	arma::mat R = arma::diagmat(X);
 	return scope.Close(matWrap::NewInstance(R));
-	} else if (colvecWrap::HasInstance(args[0])){
+	} else if (colvecWrap<double>::HasInstance(args[0])){
 	 arma::colvec x = UnwrapColvec(args[0]);
 	 arma::mat R = arma::diagmat(x);
 	 return scope.Close(matWrap::NewInstance(R));
@@ -778,8 +778,11 @@ Handle<Value> Qr_econ(const Arguments& args){
 void Initialize(Handle<Object> target) {
   // initialize armadillo classes
   matWrap::Initialize(target);
-  colvecWrap::Initialize(target);
   rowvecWrap::Initialize(target);
+
+  // initialize Colvec classes
+  colvecWrap<double>::Initialize(target);
+  colvecWrap<float>::Initialize(target);
 
   // initialize Cube classes
   cubeWrap<double>::Initialize(target);

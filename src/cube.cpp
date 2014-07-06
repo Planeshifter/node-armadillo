@@ -105,4 +105,4 @@ Handle<Value> cubeWrap<T>::New(const Arguments& args) {
 	   String::New("Error: Function is a constructor, has to be invoked with new.")));
 
   }
-}
+};

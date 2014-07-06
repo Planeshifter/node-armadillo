@@ -7,7 +7,7 @@
 #include "matrix.h"
 #include "colvec.h"
 #include "rowvec.h"
-#include "helper.h"
+
 
 using namespace v8;
 using namespace std;
@@ -19,9 +19,9 @@ arma::mat UnwrapMatrix(Handle<Value> inputMat){
 	return *r;
 }
 
-arma::colvec UnwrapColvec(Handle<Value> inputVec){
+arma::Col<double> UnwrapColvec(Handle<Value> inputVec){
 	Handle<Object> obj = Handle<Object>::Cast(inputVec);
-	colvecWrap* u = node::ObjectWrap::Unwrap<colvecWrap>(obj);
+	colvecWrap<double>* u = node::ObjectWrap::Unwrap<colvecWrap<double> >(obj);
 	arma::colvec* r = u->GetWrapped();
 	return *r;
 }
