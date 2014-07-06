@@ -14,7 +14,7 @@ using namespace std;
 
 arma::mat UnwrapMatrix(Handle<Value> inputMat){
 	Handle<Object> obj = Handle<Object>::Cast(inputMat);
-	matWrap* u = node::ObjectWrap::Unwrap<matWrap>(obj);
+	matWrap<double>* u = node::ObjectWrap::Unwrap<matWrap<double> >(obj);
 	arma::mat* r = u->GetWrapped();
 	return *r;
 }

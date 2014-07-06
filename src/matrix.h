@@ -9,17 +9,19 @@
 
 using namespace v8;
 
+template <typename T>
 class matWrap : public node::ObjectWrap {
   
   public:  
     static void Initialize(v8::Handle<v8::Object> target);
-    arma::mat* GetWrapped() const { return q_; };
-    void SetWrapped(arma::mat q) {
+    arma::Mat<T>* GetWrapped() const { return q_; };
+    void SetWrapped(arma::Mat<T> q) {
       if (q_) delete q_;
-      q_ = new arma::mat(q);
+      q_ = new arma::Mat<T>(q);
       };
-  
-    static v8::Handle<v8::Value> NewInstance(arma::mat q);
+
+    static void registerMethods(Local<FunctionTemplate> tpl);
+    static v8::Handle<v8::Value> NewInstance(arma::Mat<T> q);
     
     // check whether something is an instance of the matrix class
      static bool HasInstance(v8::Handle<v8::Value> value) {
@@ -92,7 +94,9 @@ class matWrap : public node::ObjectWrap {
    static v8::Handle<v8::Value> GetNelem(v8::Local<v8::String> property, const v8::AccessorInfo& info);
 
    // Wrapped object
-   arma::mat* q_;
+   arma::Mat<T>* q_;
 };
+
+#include "matrix.cpp"
 
 #endif
