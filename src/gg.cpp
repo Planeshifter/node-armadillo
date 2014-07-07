@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <string>
 
 #include "matrix.h"
 #include "colvec.h"
@@ -18,6 +19,7 @@ using namespace std;
 
 Handle<Value> Exp(const Arguments& args){
 	HandleScope scope;
+
 	if (args[0]->IsObject()){
 		if(colvecWrap<double>::HasInstance(args[0]) == true) {
 			arma::colvec A = UnwrapColvec(args[0]);
@@ -391,14 +393,29 @@ Handle<Value> Rank(const Arguments& args){
 Handle<Value> Trace(const Arguments& args) {
   HandleScope scope;
 
-  if(matWrap<double>::HasInstance(args[0]) != true) {
-	  return ThrowException(Exception::TypeError(
-		  String::New("Function expects a (square) matrix as its sole argument")));
+  int argType = checkMatType(args[0]);
+  Handle<Object> obj = Handle<Object>::Cast(args[0]);
+  double tr;
+
+  switch(argType){
+  case 1:{
+	  matWrap<double>* u1 = node::ObjectWrap::Unwrap<matWrap<double> >(obj);
+	  arma::mat* r1 = u1->GetWrapped();
+	  tr = arma::trace(*r1);
+	  return scope.Close(Number::New(tr));
+  	  }
+	  break;
+  case 2:{
+	  matWrap<float>* u2 = node::ObjectWrap::Unwrap<matWrap<float> >(obj);
+	  arma::Mat<float>* r2 = u2->GetWrapped();
+	  tr = arma::trace(*r2);
+	  return scope.Close(Number::New(tr));
+  	  }
+	  break;
   }
 
-  arma::mat A = UnwrapMatrix(args[0]);
-  double tr = arma::trace(A);
-  return scope.Close(Number::New(tr));
+  return ThrowException(Exception::TypeError(
+	  String::New("Function expects a (square) matrix as its sole argument")));
 }
 
 // Scalar/Vector Valued Functions of Vectors/Matrices
